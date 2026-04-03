@@ -1,370 +1,838 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang='th'>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RD Pad — MBOX Karaoke Controller</title>
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#09090F;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.10);
-  --purple:#A855F7;--pink:#EC4899;--teal:#00D2CC;
-  --text:rgba(255,255,255,1);--muted:rgba(255,255,255,0.55);
-}
-html{scroll-behavior:smooth}
-body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>RD Pad — MBOX Karaoke Controller</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);
-  background:rgba(9,9,15,0.85);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px}
-.nav-logo{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--pink));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-links{display:flex;gap:24px}
-.nav-links a{font-size:13px;color:var(--muted);transition:color 0.2s}
-.nav-links a:hover{color:var(--text)}
-@media(max-width:600px){.nav-links{display:none}}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* SECTIONS */
-section{padding:80px 24px;max-width:1100px;margin:0 auto}
-h2{font-size:32px;font-weight:800;margin-bottom:8px}
-.section-sub{color:var(--muted);font-size:15px;margin-bottom:48px}
-.grad{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    :root {
+      --bg: #09090F;
+      --purple: #A855F7;
+      --pink: #EC4899;
+      --teal: #00D2CC;
+      --glass-bg: rgba(255,255,255,0.05);
+      --glass-border: rgba(255,255,255,0.10);
+      --text: #E2E8F0;
+      --text-muted: #94A3B8;
+    }
 
-/* HERO */
-.hero{text-align:center;padding:100px 24px 80px;max-width:1100px;margin:0 auto;position:relative}
-.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
-  width:600px;height:400px;background:radial-gradient(ellipse,rgba(168,85,247,0.25) 0%,transparent 70%);
-  pointer-events:none;z-index:0}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(168,85,247,0.15);
-  border:1px solid rgba(168,85,247,0.35);border-radius:999px;padding:5px 14px;
-  font-size:12px;font-weight:600;color:var(--purple);margin-bottom:24px}
-.hero h1{font-size:clamp(52px,10vw,96px);font-weight:900;line-height:1;position:relative;z-index:1}
-.hero-sub{font-size:18px;color:var(--muted);margin-top:16px;position:relative;z-index:1}
-.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.chip{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:999px;
-  padding:6px 16px;font-size:13px;color:var(--muted)}
+    html { scroll-behavior: smooth; }
 
-/* CARDS GRID */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-@media(max-width:800px){.grid2,.grid3,.grid5{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.grid2,.grid3,.grid5{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;
-  transition:border-color 0.2s,transform 0.2s}
-.card:hover{border-color:rgba(168,85,247,0.4);transform:translateY(-2px)}
-.card-icon{font-size:28px;margin-bottom:12px}
-.card h3{font-size:15px;font-weight:700;margin-bottom:6px}
-.card p{font-size:13px;color:var(--muted);line-height:1.6}
-.card-en{font-size:11px;color:var(--purple);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* ARCH */
-.arch-box{background:rgba(255,255,255,0.04);border:1px solid rgba(168,85,247,0.25);
-  border-radius:12px;padding:12px 20px;text-align:center;font-size:13px;font-weight:600;
-  white-space:nowrap}
-.arch-arrow{color:var(--purple);font-size:20px;padding:0 4px}
-.arch-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:16px}
-.arch-label{font-size:11px;color:var(--muted);margin-right:8px;min-width:60px;text-align:right}
-.arch-port{background:rgba(0,210,204,0.15);border-color:rgba(0,210,204,0.35);color:var(--teal)}
-.arch-cloud{background:rgba(236,72,153,0.10);border-color:rgba(236,72,153,0.30);color:var(--pink)}
-.arch-auth{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);color:var(--purple)}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-/* TECH PILLS */
-.pills{display:flex;flex-wrap:wrap;gap:10px}
-.pill{background:rgba(255,255,255,0.06);border:1px solid var(--border);
-  border-radius:999px;padding:7px 18px;font-size:13px;font-weight:500}
-.pill-purple{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.35);color:var(--purple)}
-.pill-teal{background:rgba(0,210,204,0.10);border-color:rgba(0,210,204,0.30);color:var(--teal)}
-.pill-pink{background:rgba(236,72,153,0.10);border-color:rgba(236,72,153,0.30);color:var(--pink)}
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50%       { opacity: 0.8; transform: scale(1.08); }
+    }
 
-/* ROADMAP */
-.roadmap{display:flex;flex-direction:column;gap:16px}
-.phase{background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:20px 24px;display:flex;align-items:flex-start;gap:16px}
-.phase-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:18px;flex-shrink:0}
-.phase-done{background:rgba(0,210,204,0.15);border:1px solid rgba(0,210,204,0.3)}
-.phase-active{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)}
-.phase-future{background:rgba(255,255,255,0.05);border:1px solid var(--border)}
-.phase h4{font-size:15px;font-weight:700;margin-bottom:4px}
-.phase p{font-size:13px;color:var(--muted)}
-.badge-done{background:rgba(0,210,204,0.15);color:var(--teal);border-radius:999px;
-  padding:2px 10px;font-size:11px;font-weight:700;margin-left:8px}
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
 
-/* USER CARDS */
-.user-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:600px){.user-cards{grid-template-columns:1fr}}
-.user-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center}
-.user-card .icon{font-size:48px;margin-bottom:16px}
-.user-card h3{font-size:20px;font-weight:800;margin-bottom:8px}
-.user-card p{color:var(--muted);font-size:14px;line-height:1.7}
-.user-card ul{list-style:none;text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:6px}
-.user-card ul li{font-size:13px;color:var(--muted)}
-.user-card ul li::before{content:"• ";color:var(--purple)}
+    .fade-in { animation: fadeIn 0.7s ease both; }
+    .fade-in-1 { animation: fadeIn 0.7s 0.1s ease both; }
+    .fade-in-2 { animation: fadeIn 0.7s 0.2s ease both; }
+    .fade-in-3 { animation: fadeIn 0.7s 0.3s ease both; }
+    .fade-in-4 { animation: fadeIn 0.7s 0.4s ease both; }
+    .fade-in-5 { animation: fadeIn 0.7s 0.5s ease both; }
 
-/* FOOTER */
-footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);
-  color:var(--muted);font-size:13px}
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9,9,15,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
 
-/* ANIMATE */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.fadeup{animation:fadeUp 0.6s ease forwards}
-</style>
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--purple); }
+
+    @media (max-width: 640px) {
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.75rem; }
+    }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+    h2.section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 2.5rem;
+      background: linear-gradient(135deg, #fff 60%, var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* HERO */
+    .hero-wrap {
+      position: relative;
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, rgba(236,72,153,0.06) 50%, transparent 70%);
+      animation: glow-pulse 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(168,85,247,0.15);
+      border: 1px solid rgba(168,85,247,0.4);
+      color: var(--purple);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      background: linear-gradient(135deg, #ffffff 30%, var(--purple) 60%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.25rem;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .hero-subtitle span {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    /* GLASS CARD */
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(168,85,247,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(168,85,247,0.12);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* OVERVIEW GRID */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .overview-grid { grid-template-columns: 1fr; }
+    }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 500px) {
+      .features-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        scrollbar-width: thin;
+        scrollbar-color: var(--purple) transparent;
+      }
+      .features-grid .card { min-width: 200px; flex-shrink: 0; }
+    }
+
+    .feature-tag {
+      display: inline-block;
+      background: rgba(0,210,204,0.12);
+      border: 1px solid rgba(0,210,204,0.25);
+      color: var(--teal);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      margin-top: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ARCHITECTURE */
+    .arch-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-box {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .arch-box.purple {
+      border-color: rgba(168,85,247,0.5);
+      background: rgba(168,85,247,0.12);
+      color: #d8b4fe;
+    }
+
+    .arch-box.pink {
+      border-color: rgba(236,72,153,0.5);
+      background: rgba(236,72,153,0.12);
+      color: #f9a8d4;
+    }
+
+    .arch-box.teal {
+      border-color: rgba(0,210,204,0.5);
+      background: rgba(0,210,204,0.12);
+      color: #5eead4;
+    }
+
+    .arch-box.orange {
+      border-color: rgba(251,146,60,0.5);
+      background: rgba(251,146,60,0.12);
+      color: #fdba74;
+    }
+
+    .arch-arrow {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .arch-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.35rem;
+    }
+
+    .arch-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* TECH STACK */
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tech-pill {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .tech-pill:hover {
+      border-color: rgba(168,85,247,0.5);
+      background: rgba(168,85,247,0.1);
+      color: #d8b4fe;
+    }
+
+    .tech-pill.purple { border-color: rgba(168,85,247,0.4); color: #d8b4fe; }
+    .tech-pill.pink   { border-color: rgba(236,72,153,0.4); color: #f9a8d4; }
+    .tech-pill.teal   { border-color: rgba(0,210,204,0.4);  color: #5eead4; }
+
+    /* ROADMAP */
+    .roadmap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--purple), var(--pink), rgba(255,255,255,0.05));
+    }
+
+    .roadmap-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.25rem 0;
+      position: relative;
+    }
+
+    .roadmap-dot {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      background: var(--bg);
+      border: 2px solid var(--glass-border);
+    }
+
+    .roadmap-dot.done  { border-color: var(--teal);   background: rgba(0,210,204,0.12); }
+    .roadmap-dot.active{ border-color: var(--purple); background: rgba(168,85,247,0.12); }
+    .roadmap-dot.plan  { border-color: rgba(255,255,255,0.15); }
+    .roadmap-dot.future{ border-color: rgba(236,72,153,0.4); background: rgba(236,72,153,0.08); }
+
+    .roadmap-content { flex: 1; padding-top: 0.5rem; }
+
+    .roadmap-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.35rem;
+    }
+
+    .roadmap-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .roadmap-status {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .status-done   { background: rgba(0,210,204,0.15);  color: var(--teal);   border: 1px solid rgba(0,210,204,0.3);  }
+    .status-active { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+    .status-plan   { background: rgba(255,255,255,0.05);color: var(--text-muted); border: 1px solid var(--glass-border); }
+    .status-future { background: rgba(236,72,153,0.12); color: var(--pink);   border: 1px solid rgba(236,72,153,0.3); }
+
+    /* USERS */
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .users-grid { grid-template-columns: 1fr; }
+    }
+
+    .user-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.25rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .user-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 80px rgba(168,85,247,0.15);
+      border-color: rgba(168,85,247,0.3);
+    }
+
+    .user-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .user-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .user-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .user-list li {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .user-list li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--purple);
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, var(--purple), var(--pink));
+      border-radius: 999px;
+      margin-bottom: 2rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer span {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* SECTION CONTAINER */
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .arch-section-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .arch-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+    }
+
+    .arch-card-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="nav-logo">RD Pad</div>
-  <div class="nav-links">
-    <a href="#overview">ภาพรวม</a>
-    <a href="#features">ฟีเจอร์</a>
-    <a href="#architecture">สถาปัตยกรรม</a>
-    <a href="#techstack">Tech Stack</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#users">ผู้ใช้</a>
-  </div>
+  <div class='nav-logo'>RD Pad</div>
+  <ul class='nav-links'>
+    <li><a href='#overview'>ภาพรวม</a></li>
+    <li><a href='#features'>ฟีเจอร์</a></li>
+    <li><a href='#architecture'>สถาปัตยกรรม</a></li>
+    <li><a href='#techstack'>Tech Stack</a></li>
+    <li><a href='#roadmap'>Roadmap</a></li>
+  </ul>
 </nav>
 
 <!-- HERO -->
-<div class="hero fadeup">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">⚡ Phase 1 — UI/UX Complete</div>
-  <h1 class="grad">RD Pad</h1>
-  <p class="hero-sub">MBOX Karaoke Controller — Web Edition<br>ควบคุมเครื่องคาราโอเกะ MBOX ผ่านเบราว์เซอร์</p>
-  <div class="hero-chips">
-    <span class="chip">MBOX Echo Pro</span>
-    <span class="chip">MBOX Mini Spark</span>
-    <span class="chip">Android 11+</span>
-    <span class="chip">TCP:6666</span>
-    <span class="chip">Web Browser Only</span>
+<div class='hero-wrap'>
+  <div class='hero-orb'></div>
+  <div class='fade-in'>
+    <div class='hero-badge'>Phase 1 — UI Complete</div>
+    <h1 class='hero-title'>RD Pad</h1>
+    <p class='hero-subtitle'>
+      <span>MBOX Karaoke Controller</span> — Web Edition<br>
+      ควบคุมเครื่องคาราโอเกะผ่านเบราว์เซอร์ ไม่ต้องดาวน์โหลดแอพ
+    </p>
   </div>
 </div>
 
 <!-- OVERVIEW -->
-<section id="overview">
-  <h2><span class="grad">ภาพรวมโปรเจกต์</span></h2>
-  <p class="section-sub">Project Overview — ทำไมถึงต้องสร้าง RD Pad</p>
-  <div class="grid2">
-    <div class="card">
-      <div class="card-icon">😤</div>
-      <div class="card-en">Problem</div>
-      <h3>ปัญหาของ MPAD2</h3>
-      <p>ต้องดาวน์โหลดและติดตั้งแอพ บน iOS/Android ไม่รองรับทุกรุ่น ลูกค้าหลายคนไม่สะดวกติดตั้ง</p>
+<div id='overview'>
+  <div class='section-inner'>
+    <div class='fade-in-1'>
+      <h2 class='section-title'>ภาพรวม</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="card">
-      <div class="card-icon">🌐</div>
-      <div class="card-en">Solution</div>
-      <h3>RD Pad — Browser First</h3>
-      <p>เปิดผ่านเบราว์เซอร์ได้เลย สแกน QR Code → เข้าใช้งานทันที รองรับทุก Platform ทุกอุปกรณ์</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">👥</div>
-      <div class="card-en">Target Users</div>
-      <h3>กลุ่มเป้าหมาย</h3>
-      <p>ลูกค้าบ้าน (1 ห้อง) และร้านอาหาร/คาราโอเกะ (1–50 ห้อง) รองรับทั้ง Home User และ Business</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📦</div>
-      <div class="card-en">Compatible</div>
-      <h3>รองรับอุปกรณ์</h3>
-      <p>MBOX Echo Pro, MBOX Mini Spark ระบบปฏิบัติการ Android 11+ เชื่อมต่อผ่าน TCP Port 6666</p>
+    <div class='overview-grid'>
+      <div class='card fade-in-1'>
+        <span class='card-icon'>🔴</span>
+        <div class='card-title'>ปัญหา</div>
+        <div class='card-body'>
+          MPAD2 (แอพเดิม) ต้องดาวน์โหลดและติดตั้ง ไม่รองรับทุกอุปกรณ์ ใช้งานไม่สะดวกเมื่อมีหลายห้อง
+        </div>
+      </div>
+      <div class='card fade-in-2'>
+        <span class='card-icon'>✅</span>
+        <div class='card-title'>วิธีแก้ปัญหา</div>
+        <div class='card-body'>
+          เปิดผ่านเบราว์เซอร์ได้เลย รองรับทุก Platform (iOS, Android, PC, TV) ไม่ต้อง Install อะไรทั้งนั้น
+        </div>
+      </div>
+      <div class='card fade-in-3'>
+        <span class='card-icon'>🎯</span>
+        <div class='card-title'>กลุ่มเป้าหมาย</div>
+        <div class='card-body'>
+          บ้าน (1 ห้อง) — ใช้งานง่าย เปิดได้ทันที<br>
+          ร้านค้า / คาราโอเกะ — 1–50 ห้อง มี Admin Panel จัดการหลายเครื่อง
+        </div>
+      </div>
+      <div class='card fade-in-4'>
+        <span class='card-icon'>📱</span>
+        <div class='card-title'>รองรับ</div>
+        <div class='card-body'>
+          MBOX Echo Pro, MBOX Mini Spark<br>
+          Android 11 ขึ้นไป<br>
+          TCP Protocol Port 6666
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- FEATURES -->
-<section id="features">
-  <h2><span class="grad">ฟีเจอร์หลัก</span></h2>
-  <p class="section-sub">5 หน้าหลัก — Navigation Tabs</p>
-  <div class="grid5">
-    <div class="card" style="border-color:rgba(0,210,204,0.3)">
-      <div class="card-icon">🎵</div>
-      <div class="card-en">Now Playing</div>
-      <h3>เล่น</h3>
-      <p>แสดงเพลงปัจจุบัน ปุ่ม Play/Pause/Skip ปรับ Key และระดับเสียง Floating mini player</p>
+<div id='features' style='background: rgba(168,85,247,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);'>
+  <div class='section-inner'>
+    <div class='fade-in'>
+      <h2 class='section-title'>ฟีเจอร์หลัก</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="card">
-      <div class="card-icon">🔍</div>
-      <div class="card-en">Search</div>
-      <h3>ค้นหา</h3>
-      <p>ค้นหาเพลง Thai / EN / JP / KR จาก Cloud Song DB ดู Grid Cards เพิ่มเข้าคิวได้เลย</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📋</div>
-      <div class="card-en">Queue</div>
-      <h3>คิว</h3>
-      <p>จัดการคิวเพลง เรียงลำดับ ลบรายการ ดูรายชื่อเพลงที่จะเล่นต่อไป</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">✨</div>
-      <div class="card-en">Effects</div>
-      <h3>เอฟเฟกต์</h3>
-      <p>Sound Effects ตบมือ หัวเราะ บูม Phase 4: DSP แต่งเสียงร้องได้</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">⚙️</div>
-      <div class="card-en">Settings</div>
-      <h3>ตั้งค่า</h3>
-      <p>เชื่อมต่อเครื่อง MBOX เลือกห้อง Favorite Playlists Login ด้วย LINE/Google</p>
+    <div class='features-grid'>
+      <div class='card fade-in-1'>
+        <span class='card-icon'>🎵</span>
+        <div class='card-title'>เล่น (Now Playing)</div>
+        <div class='card-body'>
+          แสดงเพลงที่กำลังเล่น คีย์ เสียง ระดับเสียง ปุ่มควบคุม Play/Pause/Next/Prev
+        </div>
+        <span class='feature-tag'>Phase 1</span>
+      </div>
+      <div class='card fade-in-2'>
+        <span class='card-icon'>🔍</span>
+        <div class='card-title'>ค้นหา (Search)</div>
+        <div class='card-body'>
+          ค้นหาเพลง Thai / EN / JP / KR รองรับ Cloud Song DB อัพเดทอัตโนมัติ
+        </div>
+        <span class='feature-tag'>Phase 3</span>
+      </div>
+      <div class='card fade-in-3'>
+        <span class='card-icon'>📋</span>
+        <div class='card-title'>คิว (Queue)</div>
+        <div class='card-body'>
+          จัดการคิวเพลง เรียงลำดับด้วย Drag &amp; Drop ลบเพลงออกจากคิวได้
+        </div>
+        <span class='feature-tag'>Phase 2</span>
+      </div>
+      <div class='card fade-in-4'>
+        <span class='card-icon'>✨</span>
+        <div class='card-title'>เอฟเฟกต์ (Effects)</div>
+        <div class='card-body'>
+          Sound Effects ตบมือ หัวเราะ เสียงฝูงชน Phase 4: DSP Voice Processing
+        </div>
+        <span class='feature-tag'>Phase 4</span>
+      </div>
+      <div class='card fade-in-5'>
+        <span class='card-icon'>⚙️</span>
+        <div class='card-title'>ตั้งค่า (Settings)</div>
+        <div class='card-body'>
+          เชื่อมต่อเครื่อง MBOX, Favorite Playlists, Login LINE/Google, Admin Panel
+        </div>
+        <span class='feature-tag'>Phase 3</span>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ARCHITECTURE -->
-<section id="architecture">
-  <h2><span class="grad">สถาปัตยกรรม</span></h2>
-  <p class="section-sub">Architecture — การทำงานของระบบ</p>
-  <div class="card" style="padding:32px">
-    <div class="arch-row">
-      <span class="arch-label">Karaoke</span>
-      <div class="arch-box">🌐 Browser<br><small>Web App (Next.js)</small></div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box">🔌 WebSocket</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box">⚙️ Node.js<br><small>TCP Bridge</small></div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box arch-port">📡 TCP:6666</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box arch-port">📺 MBOX<br><small>Android 11+</small></div>
+<div id='architecture'>
+  <div class='section-inner'>
+    <div class='fade-in'>
+      <h2 class='section-title'>สถาปัตยกรรมระบบ</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="arch-row" style="margin-top:20px">
-      <span class="arch-label">Songs</span>
-      <div class="arch-box">🌐 Browser</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box">🔗 REST API</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box arch-cloud">☁️ Cloud Song DB<br><small>JSON API</small></div>
-    </div>
-    <div class="arch-row" style="margin-top:20px">
-      <span class="arch-label">Auth</span>
-      <div class="arch-box">👤 User</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box arch-auth">LINE / Google OAuth</div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-box arch-auth">🗄️ Supabase<br><small>Auth + DB</small></div>
+
+    <div class='arch-section-grid'>
+      <div class='arch-card fade-in-1'>
+        <div class='arch-card-label'>Control Flow — Browser to MBOX</div>
+        <div class='arch-flow'>
+          <div class='arch-box purple'>Browser<br><small style='font-weight:400;color:#a78bfa;font-size:0.7rem;'>Next.js App</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box teal'>WebSocket<br><small style='font-weight:400;color:#5eead4;font-size:0.7rem;'>ws://</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box orange'>Node.js Bridge<br><small style='font-weight:400;color:#fdba74;font-size:0.7rem;'>TCP Proxy</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box pink'>TCP :6666<br><small style='font-weight:400;color:#f9a8d4;font-size:0.7rem;'>MBOX LAN</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box' style='border-color:rgba(251,146,60,0.4);background:rgba(251,146,60,0.08);color:#fdba74;'>MBOX<br><small style='font-weight:400;color:#fdba74;font-size:0.7rem;'>Hardware</small></div>
+        </div>
+      </div>
+
+      <div class='arch-card fade-in-2'>
+        <div class='arch-card-label'>Data Flow — Cloud Song Database</div>
+        <div class='arch-flow'>
+          <div class='arch-box purple'>Browser<br><small style='font-weight:400;color:#a78bfa;font-size:0.7rem;'>Search UI</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box teal'>REST API<br><small style='font-weight:400;color:#5eead4;font-size:0.7rem;'>Next.js Routes</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box' style='border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.08);color:#86efac;'>Cloud Song DB<br><small style='font-weight:400;color:#86efac;font-size:0.7rem;'>Supabase</small></div>
+        </div>
+      </div>
+
+      <div class='arch-card fade-in-3'>
+        <div class='arch-card-label'>Auth Flow — User Authentication</div>
+        <div class='arch-flow'>
+          <div class='arch-box purple'>User<br><small style='font-weight:400;color:#a78bfa;font-size:0.7rem;'>Browser</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box teal'>LINE / Google<br><small style='font-weight:400;color:#5eead4;font-size:0.7rem;'>OAuth 2.0</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box' style='border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.08);color:#86efac;'>Supabase<br><small style='font-weight:400;color:#86efac;font-size:0.7rem;'>Auth + DB</small></div>
+          <div class='arch-arrow'>&#8594;</div>
+          <div class='arch-box pink'>Session<br><small style='font-weight:400;color:#f9a8d4;font-size:0.7rem;'>JWT Token</small></div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- TECH STACK -->
-<section id="techstack">
-  <h2><span class="grad">Tech Stack</span></h2>
-  <p class="section-sub">เทคโนโลยีที่ใช้ในโปรเจกต์</p>
-  <div class="grid3" style="margin-bottom:20px">
-    <div class="card">
-      <div class="card-en">Frontend</div>
-      <h3 style="margin-bottom:12px">UI Layer</h3>
-      <div class="pills">
-        <span class="pill pill-purple">Next.js 14</span>
-        <span class="pill pill-purple">TypeScript</span>
-        <span class="pill pill-purple">Tailwind CSS</span>
-        <span class="pill pill-purple">Zustand</span>
-      </div>
+<div id='techstack' style='background: rgba(0,210,204,0.02); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);'>
+  <div class='section-inner'>
+    <div class='fade-in'>
+      <h2 class='section-title'>Tech Stack</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="card">
-      <div class="card-en">Backend</div>
-      <h3 style="margin-bottom:12px">Server Layer</h3>
-      <div class="pills">
-        <span class="pill pill-teal">Node.js</span>
-        <span class="pill pill-teal">Socket.io</span>
-        <span class="pill pill-teal">TCP Bridge</span>
-        <span class="pill pill-teal">REST API</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-en">Auth + Cloud</div>
-      <h3 style="margin-bottom:12px">Services</h3>
-      <div class="pills">
-        <span class="pill pill-pink">Supabase</span>
-        <span class="pill pill-pink">LINE OAuth</span>
-        <span class="pill pill-pink">Google OAuth</span>
-      </div>
+    <div class='tech-grid fade-in-1'>
+      <span class='tech-pill purple'>Next.js 14</span>
+      <span class='tech-pill purple'>TypeScript</span>
+      <span class='tech-pill purple'>Tailwind CSS</span>
+      <span class='tech-pill purple'>Zustand</span>
+      <span class='tech-pill teal'>WebSocket</span>
+      <span class='tech-pill teal'>Node.js</span>
+      <span class='tech-pill teal'>TCP Protocol</span>
+      <span class='tech-pill pink'>Supabase</span>
+      <span class='tech-pill pink'>LINE OAuth</span>
+      <span class='tech-pill pink'>Google OAuth</span>
+      <span class='tech-pill'>Vercel</span>
+      <span class='tech-pill'>GitHub Pages</span>
     </div>
   </div>
-  <div class="pills">
-    <span class="pill">Vercel (Deploy)</span>
-    <span class="pill">GitHub Pages (Docs)</span>
-    <span class="pill">QR Code</span>
-    <span class="pill">Dark UI / Glass Morphism</span>
-    <span class="pill">Phase 4: DSP Voice</span>
-  </div>
-</section>
+</div>
 
 <!-- ROADMAP -->
-<section id="roadmap">
-  <h2><span class="grad">Roadmap</span></h2>
-  <p class="section-sub">แผนการพัฒนา 4 Phase</p>
-  <div class="roadmap">
-    <div class="phase">
-      <div class="phase-num phase-done">✅</div>
-      <div>
-        <h4>Phase 1 — Full UI + Mock Data <span class="badge-done">เสร็จแล้ว</span></h4>
-        <p>สร้าง UI ครบทุกหน้า (เล่น / ค้นหา / คิว / เอฟเฟกต์ / ตั้งค่า) พร้อม Mock Data และ KaraokeController trigger layer</p>
-      </div>
+<div id='roadmap'>
+  <div class='section-inner'>
+    <div class='fade-in'>
+      <h2 class='section-title'>Roadmap</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="phase">
-      <div class="phase-num phase-active">🔄</div>
-      <div>
-        <h4>Phase 2 — Backend + TCP Bridge</h4>
-        <p>Node.js WebSocket server เชื่อมต่อกับ MBOX จริงผ่าน TCP:6666 ส่ง command จริงได้</p>
+    <div class='roadmap'>
+      <div class='roadmap-item fade-in-1'>
+        <div class='roadmap-dot done'>&#9989;</div>
+        <div class='roadmap-content'>
+          <span class='roadmap-status status-done'>เสร็จแล้ว</span>
+          <div class='roadmap-title'>Phase 1 — Full UI + Mock Data</div>
+          <div class='roadmap-desc'>
+            UI ครบทุกหน้า Now Playing, Search, Queue, Effects, Settings
+            ด้วย Mock Data รองรับ Responsive ทุกขนาดหน้าจอ
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="phase">
-      <div class="phase-num phase-future">📋</div>
-      <div>
-        <h4>Phase 3 — Auth + Cloud DB</h4>
-        <p>Supabase Auth, LINE/Google OAuth, Cloud Song DB, Favorite Playlists per user, Multi-room shop support</p>
+      <div class='roadmap-item fade-in-2'>
+        <div class='roadmap-dot active'>&#128260;</div>
+        <div class='roadmap-content'>
+          <span class='roadmap-status status-active'>กำลังพัฒนา</span>
+          <div class='roadmap-title'>Phase 2 — Backend + TCP Bridge</div>
+          <div class='roadmap-desc'>
+            Node.js WebSocket-to-TCP Bridge เชื่อมต่อ MBOX จริงผ่าน LAN
+            ทดสอบคำสั่งควบคุมจริง (Play, Pause, Next, Volume, Key)
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="phase">
-      <div class="phase-num phase-future">🔮</div>
-      <div>
-        <h4>Phase 4 — DSP Voice Processing</h4>
-        <p>แต่งเสียงร้องแบบ Real-time DSP, Reverb, Echo, Pitch correction, Vocal enhancement</p>
+      <div class='roadmap-item fade-in-3'>
+        <div class='roadmap-dot plan'>&#128203;</div>
+        <div class='roadmap-content'>
+          <span class='roadmap-status status-plan'>แผนงาน</span>
+          <div class='roadmap-title'>Phase 3 — Auth + Cloud DB (Supabase + LINE/Google)</div>
+          <div class='roadmap-desc'>
+            ระบบ Login ด้วย LINE / Google OAuth, Supabase Database
+            Cloud Song DB, Favorite Playlists, Admin Panel สำหรับร้านค้า
+          </div>
+        </div>
+      </div>
+      <div class='roadmap-item fade-in-4'>
+        <div class='roadmap-dot future'>&#128302;</div>
+        <div class='roadmap-content'>
+          <span class='roadmap-status status-future'>อนาคต</span>
+          <div class='roadmap-title'>Phase 4 — DSP Voice Processing</div>
+          <div class='roadmap-desc'>
+            Real-time DSP Voice Effects, AI Pitch Correction
+            ประมวลผลเสียงขั้นสูงสำหรับนักร้องมืออาชีพ
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- USER TYPES -->
-<section id="users">
-  <h2><span class="grad">กลุ่มผู้ใช้</span></h2>
-  <p class="section-sub">User Types — ออกแบบรองรับทั้งสองกลุ่ม</p>
-  <div class="user-cards">
-    <div class="user-card" style="border-color:rgba(0,210,204,0.25)">
-      <div class="icon">🏠</div>
-      <h3>Home User</h3>
-      <p>ลูกค้าบ้าน ห้องคาราโอเกะส่วนตัว 1 ห้อง</p>
-      <ul>
-        <li>ไม่ต้อง Login ก็ใช้งานได้</li>
-        <li>สแกน QR → เชื่อมต่อทันที</li>
-        <li>Favorite Playlist (ต้อง Login)</li>
-        <li>ปรับ Key / Volume / MIC</li>
-        <li>Sound Effects</li>
-      </ul>
+<!-- USERS -->
+<div id='users' style='background: rgba(168,85,247,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);'>
+  <div class='section-inner'>
+    <div class='fade-in'>
+      <h2 class='section-title'>กลุ่มผู้ใช้</h2>
+      <div class='section-divider'></div>
     </div>
-    <div class="user-card" style="border-color:rgba(236,72,153,0.25)">
-      <div class="icon">🏪</div>
-      <h3>Shop / Restaurant</h3>
-      <p>ร้านอาหาร ร้านคาราโอเกะ 1–50 ห้อง</p>
-      <ul>
-        <li>Admin Panel จัดการทุกห้อง</li>
-        <li>ดู QR Code แต่ละห้อง</li>
-        <li>แสดงสถานะทุกเครื่อง</li>
-        <li>Staff Login (คนของร้าน)</li>
-        <li>รองรับ 1–50 ห้องต่อสาขา</li>
-      </ul>
+    <div class='users-grid'>
+      <div class='user-card fade-in-1'>
+        <span class='user-icon'>&#128100;</span>
+        <div class='user-title'>Home User</div>
+        <ul class='user-list'>
+          <li>1 ห้องคาราโอเกะ</li>
+          <li>ไม่ต้อง Login ก็ใช้ได้</li>
+          <li>เปิดบนมือถือ / Tablet</li>
+          <li>เชื่อมต่อ MBOX ผ่าน WiFi</li>
+          <li>Simple UI เข้าใช้ทันที</li>
+        </ul>
+      </div>
+      <div class='user-card fade-in-2'>
+        <span class='user-icon'>&#127978;</span>
+        <div class='user-title'>Shop / Business</div>
+        <ul class='user-list'>
+          <li>1–50 ห้องคาราโอเกะ</li>
+          <li>Admin Panel จัดการหลายเครื่อง</li>
+          <li>Login LINE / Google</li>
+          <li>ดู Usage Statistics</li>
+          <li>จัดการ Playlist กลาง</li>
+        </ul>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
+<!-- FOOTER -->
 <footer>
-  <div style="font-size:24px;margin-bottom:12px" class="grad">RD Pad</div>
-  <p>MBOX Karaoke Controller — Web Edition</p>
-  <p style="margin-top:8px;opacity:0.4">© 2025 — Built with Next.js + Tailwind CSS + Zustand · Phase 1 Complete</p>
+  <p><span>RD Pad</span> &copy; 2025 &mdash; MBOX Karaoke Controller Web Edition</p>
+  <p style='margin-top:0.5rem;font-size:0.75rem;'>Built with Next.js 14 &middot; TypeScript &middot; Tailwind CSS &middot; Supabase</p>
 </footer>
 
 </body>
