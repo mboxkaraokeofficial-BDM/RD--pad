@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RD Pad — MBOX Karaoke Controller</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090F;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.10);
+  --purple:#A855F7;--pink:#EC4899;--teal:#00D2CC;
+  --text:rgba(255,255,255,1);--muted:rgba(255,255,255,0.55);
+}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);
+  background:rgba(9,9,15,0.85);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px}
+.nav-logo{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:13px;color:var(--muted);transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+@media(max-width:600px){.nav-links{display:none}}
+
+/* SECTIONS */
+section{padding:80px 24px;max-width:1100px;margin:0 auto}
+h2{font-size:32px;font-weight:800;margin-bottom:8px}
+.section-sub{color:var(--muted);font-size:15px;margin-bottom:48px}
+.grad{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* HERO */
+.hero{text-align:center;padding:100px 24px 80px;max-width:1100px;margin:0 auto;position:relative}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
+  width:600px;height:400px;background:radial-gradient(ellipse,rgba(168,85,247,0.25) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(168,85,247,0.15);
+  border:1px solid rgba(168,85,247,0.35);border-radius:999px;padding:5px 14px;
+  font-size:12px;font-weight:600;color:var(--purple);margin-bottom:24px}
+.hero h1{font-size:clamp(52px,10vw,96px);font-weight:900;line-height:1;position:relative;z-index:1}
+.hero-sub{font-size:18px;color:var(--muted);margin-top:16px;position:relative;z-index:1}
+.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.chip{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:999px;
+  padding:6px 16px;font-size:13px;color:var(--muted)}
+
+/* CARDS GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media(max-width:800px){.grid2,.grid3,.grid5{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.grid2,.grid3,.grid5{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;
+  transition:border-color 0.2s,transform 0.2s}
+.card:hover{border-color:rgba(168,85,247,0.4);transform:translateY(-2px)}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--muted);line-height:1.6}
+.card-en{font-size:11px;color:var(--purple);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+
+/* ARCH */
+.arch-box{background:rgba(255,255,255,0.04);border:1px solid rgba(168,85,247,0.25);
+  border-radius:12px;padding:12px 20px;text-align:center;font-size:13px;font-weight:600;
+  white-space:nowrap}
+.arch-arrow{color:var(--purple);font-size:20px;padding:0 4px}
+.arch-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:16px}
+.arch-label{font-size:11px;color:var(--muted);margin-right:8px;min-width:60px;text-align:right}
+.arch-port{background:rgba(0,210,204,0.15);border-color:rgba(0,210,204,0.35);color:var(--teal)}
+.arch-cloud{background:rgba(236,72,153,0.10);border-color:rgba(236,72,153,0.30);color:var(--pink)}
+.arch-auth{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);color:var(--purple)}
+
+/* TECH PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:10px}
+.pill{background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  border-radius:999px;padding:7px 18px;font-size:13px;font-weight:500}
+.pill-purple{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.35);color:var(--purple)}
+.pill-teal{background:rgba(0,210,204,0.10);border-color:rgba(0,210,204,0.30);color:var(--teal)}
+.pill-pink{background:rgba(236,72,153,0.10);border-color:rgba(236,72,153,0.30);color:var(--pink)}
+
+/* ROADMAP */
+.roadmap{display:flex;flex-direction:column;gap:16px}
+.phase{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:20px 24px;display:flex;align-items:flex-start;gap:16px}
+.phase-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0}
+.phase-done{background:rgba(0,210,204,0.15);border:1px solid rgba(0,210,204,0.3)}
+.phase-active{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)}
+.phase-future{background:rgba(255,255,255,0.05);border:1px solid var(--border)}
+.phase h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.phase p{font-size:13px;color:var(--muted)}
+.badge-done{background:rgba(0,210,204,0.15);color:var(--teal);border-radius:999px;
+  padding:2px 10px;font-size:11px;font-weight:700;margin-left:8px}
+
+/* USER CARDS */
+.user-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.user-cards{grid-template-columns:1fr}}
+.user-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center}
+.user-card .icon{font-size:48px;margin-bottom:16px}
+.user-card h3{font-size:20px;font-weight:800;margin-bottom:8px}
+.user-card p{color:var(--muted);font-size:14px;line-height:1.7}
+.user-card ul{list-style:none;text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:6px}
+.user-card ul li{font-size:13px;color:var(--muted)}
+.user-card ul li::before{content:"• ";color:var(--purple)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);
+  color:var(--muted);font-size:13px}
+
+/* ANIMATE */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fadeup{animation:fadeUp 0.6s ease forwards}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">RD Pad</div>
+  <div class="nav-links">
+    <a href="#overview">ภาพรวม</a>
+    <a href="#features">ฟีเจอร์</a>
+    <a href="#architecture">สถาปัตยกรรม</a>
+    <a href="#techstack">Tech Stack</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#users">ผู้ใช้</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero fadeup">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">⚡ Phase 1 — UI/UX Complete</div>
+  <h1 class="grad">RD Pad</h1>
+  <p class="hero-sub">MBOX Karaoke Controller — Web Edition<br>ควบคุมเครื่องคาราโอเกะ MBOX ผ่านเบราว์เซอร์</p>
+  <div class="hero-chips">
+    <span class="chip">MBOX Echo Pro</span>
+    <span class="chip">MBOX Mini Spark</span>
+    <span class="chip">Android 11+</span>
+    <span class="chip">TCP:6666</span>
+    <span class="chip">Web Browser Only</span>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <h2><span class="grad">ภาพรวมโปรเจกต์</span></h2>
+  <p class="section-sub">Project Overview — ทำไมถึงต้องสร้าง RD Pad</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-icon">😤</div>
+      <div class="card-en">Problem</div>
+      <h3>ปัญหาของ MPAD2</h3>
+      <p>ต้องดาวน์โหลดและติดตั้งแอพ บน iOS/Android ไม่รองรับทุกรุ่น ลูกค้าหลายคนไม่สะดวกติดตั้ง</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-en">Solution</div>
+      <h3>RD Pad — Browser First</h3>
+      <p>เปิดผ่านเบราว์เซอร์ได้เลย สแกน QR Code → เข้าใช้งานทันที รองรับทุก Platform ทุกอุปกรณ์</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👥</div>
+      <div class="card-en">Target Users</div>
+      <h3>กลุ่มเป้าหมาย</h3>
+      <p>ลูกค้าบ้าน (1 ห้อง) และร้านอาหาร/คาราโอเกะ (1–50 ห้อง) รองรับทั้ง Home User และ Business</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <div class="card-en">Compatible</div>
+      <h3>รองรับอุปกรณ์</h3>
+      <p>MBOX Echo Pro, MBOX Mini Spark ระบบปฏิบัติการ Android 11+ เชื่อมต่อผ่าน TCP Port 6666</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <h2><span class="grad">ฟีเจอร์หลัก</span></h2>
+  <p class="section-sub">5 หน้าหลัก — Navigation Tabs</p>
+  <div class="grid5">
+    <div class="card" style="border-color:rgba(0,210,204,0.3)">
+      <div class="card-icon">🎵</div>
+      <div class="card-en">Now Playing</div>
+      <h3>เล่น</h3>
+      <p>แสดงเพลงปัจจุบัน ปุ่ม Play/Pause/Skip ปรับ Key และระดับเสียง Floating mini player</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-en">Search</div>
+      <h3>ค้นหา</h3>
+      <p>ค้นหาเพลง Thai / EN / JP / KR จาก Cloud Song DB ดู Grid Cards เพิ่มเข้าคิวได้เลย</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-en">Queue</div>
+      <h3>คิว</h3>
+      <p>จัดการคิวเพลง เรียงลำดับ ลบรายการ ดูรายชื่อเพลงที่จะเล่นต่อไป</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">✨</div>
+      <div class="card-en">Effects</div>
+      <h3>เอฟเฟกต์</h3>
+      <p>Sound Effects ตบมือ หัวเราะ บูม Phase 4: DSP แต่งเสียงร้องได้</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-en">Settings</div>
+      <h3>ตั้งค่า</h3>
+      <p>เชื่อมต่อเครื่อง MBOX เลือกห้อง Favorite Playlists Login ด้วย LINE/Google</p>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <h2><span class="grad">สถาปัตยกรรม</span></h2>
+  <p class="section-sub">Architecture — การทำงานของระบบ</p>
+  <div class="card" style="padding:32px">
+    <div class="arch-row">
+      <span class="arch-label">Karaoke</span>
+      <div class="arch-box">🌐 Browser<br><small>Web App (Next.js)</small></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box">🔌 WebSocket</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box">⚙️ Node.js<br><small>TCP Bridge</small></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box arch-port">📡 TCP:6666</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box arch-port">📺 MBOX<br><small>Android 11+</small></div>
+    </div>
+    <div class="arch-row" style="margin-top:20px">
+      <span class="arch-label">Songs</span>
+      <div class="arch-box">🌐 Browser</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box">🔗 REST API</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box arch-cloud">☁️ Cloud Song DB<br><small>JSON API</small></div>
+    </div>
+    <div class="arch-row" style="margin-top:20px">
+      <span class="arch-label">Auth</span>
+      <div class="arch-box">👤 User</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box arch-auth">LINE / Google OAuth</div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-box arch-auth">🗄️ Supabase<br><small>Auth + DB</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="techstack">
+  <h2><span class="grad">Tech Stack</span></h2>
+  <p class="section-sub">เทคโนโลยีที่ใช้ในโปรเจกต์</p>
+  <div class="grid3" style="margin-bottom:20px">
+    <div class="card">
+      <div class="card-en">Frontend</div>
+      <h3 style="margin-bottom:12px">UI Layer</h3>
+      <div class="pills">
+        <span class="pill pill-purple">Next.js 14</span>
+        <span class="pill pill-purple">TypeScript</span>
+        <span class="pill pill-purple">Tailwind CSS</span>
+        <span class="pill pill-purple">Zustand</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-en">Backend</div>
+      <h3 style="margin-bottom:12px">Server Layer</h3>
+      <div class="pills">
+        <span class="pill pill-teal">Node.js</span>
+        <span class="pill pill-teal">Socket.io</span>
+        <span class="pill pill-teal">TCP Bridge</span>
+        <span class="pill pill-teal">REST API</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-en">Auth + Cloud</div>
+      <h3 style="margin-bottom:12px">Services</h3>
+      <div class="pills">
+        <span class="pill pill-pink">Supabase</span>
+        <span class="pill pill-pink">LINE OAuth</span>
+        <span class="pill pill-pink">Google OAuth</span>
+      </div>
+    </div>
+  </div>
+  <div class="pills">
+    <span class="pill">Vercel (Deploy)</span>
+    <span class="pill">GitHub Pages (Docs)</span>
+    <span class="pill">QR Code</span>
+    <span class="pill">Dark UI / Glass Morphism</span>
+    <span class="pill">Phase 4: DSP Voice</span>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <h2><span class="grad">Roadmap</span></h2>
+  <p class="section-sub">แผนการพัฒนา 4 Phase</p>
+  <div class="roadmap">
+    <div class="phase">
+      <div class="phase-num phase-done">✅</div>
+      <div>
+        <h4>Phase 1 — Full UI + Mock Data <span class="badge-done">เสร็จแล้ว</span></h4>
+        <p>สร้าง UI ครบทุกหน้า (เล่น / ค้นหา / คิว / เอฟเฟกต์ / ตั้งค่า) พร้อม Mock Data และ KaraokeController trigger layer</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num phase-active">🔄</div>
+      <div>
+        <h4>Phase 2 — Backend + TCP Bridge</h4>
+        <p>Node.js WebSocket server เชื่อมต่อกับ MBOX จริงผ่าน TCP:6666 ส่ง command จริงได้</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num phase-future">📋</div>
+      <div>
+        <h4>Phase 3 — Auth + Cloud DB</h4>
+        <p>Supabase Auth, LINE/Google OAuth, Cloud Song DB, Favorite Playlists per user, Multi-room shop support</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num phase-future">🔮</div>
+      <div>
+        <h4>Phase 4 — DSP Voice Processing</h4>
+        <p>แต่งเสียงร้องแบบ Real-time DSP, Reverb, Echo, Pitch correction, Vocal enhancement</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USER TYPES -->
+<section id="users">
+  <h2><span class="grad">กลุ่มผู้ใช้</span></h2>
+  <p class="section-sub">User Types — ออกแบบรองรับทั้งสองกลุ่ม</p>
+  <div class="user-cards">
+    <div class="user-card" style="border-color:rgba(0,210,204,0.25)">
+      <div class="icon">🏠</div>
+      <h3>Home User</h3>
+      <p>ลูกค้าบ้าน ห้องคาราโอเกะส่วนตัว 1 ห้อง</p>
+      <ul>
+        <li>ไม่ต้อง Login ก็ใช้งานได้</li>
+        <li>สแกน QR → เชื่อมต่อทันที</li>
+        <li>Favorite Playlist (ต้อง Login)</li>
+        <li>ปรับ Key / Volume / MIC</li>
+        <li>Sound Effects</li>
+      </ul>
+    </div>
+    <div class="user-card" style="border-color:rgba(236,72,153,0.25)">
+      <div class="icon">🏪</div>
+      <h3>Shop / Restaurant</h3>
+      <p>ร้านอาหาร ร้านคาราโอเกะ 1–50 ห้อง</p>
+      <ul>
+        <li>Admin Panel จัดการทุกห้อง</li>
+        <li>ดู QR Code แต่ละห้อง</li>
+        <li>แสดงสถานะทุกเครื่อง</li>
+        <li>Staff Login (คนของร้าน)</li>
+        <li>รองรับ 1–50 ห้องต่อสาขา</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-size:24px;margin-bottom:12px" class="grad">RD Pad</div>
+  <p>MBOX Karaoke Controller — Web Edition</p>
+  <p style="margin-top:8px;opacity:0.4">© 2025 — Built with Next.js + Tailwind CSS + Zustand · Phase 1 Complete</p>
+</footer>
+
+</body>
+</html>
