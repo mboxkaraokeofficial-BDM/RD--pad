@@ -1,48 +1,65 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Music2, Search, ListMusic, Sparkles, User } from 'lucide-react'
+import { Music2, Search, ListMusic, Sparkles, Settings } from 'lucide-react'
+import { useQueueStore } from '@/lib/store/queueStore'
 import { cn } from '@/lib/utils'
 
 const TABS = [
-  { href: '/now-playing', icon: Music2,    label: 'เล่นอยู่' },
-  { href: '/search',      icon: Search,    label: 'ค้นหา'   },
-  { href: '/queue',       icon: ListMusic, label: 'คิว'     },
-  { href: '/effect',      icon: Sparkles,  label: 'เอฟเฟกต์'},
-  { href: '/profile',     icon: User,      label: 'โปรไฟล์' },
+  { href: '/now-playing', icon: Music2,    label: 'เล่น'      },
+  { href: '/search',      icon: Search,    label: 'ค้นหา'     },
+  { href: '/queue',       icon: ListMusic, label: 'คิว',  badge: true },
+  { href: '/effect',      icon: Sparkles,  label: 'เอฟเฟกต์' },
+  { href: '/profile',     icon: Settings,  label: 'ตั้งค่า'   },
 ]
 
 export default function BottomNav() {
   const pathname = usePathname()
+  const { queue } = useQueueStore()
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 flex justify-center pb-safe px-4 pb-3">
-      <nav className="glass-nav rounded-3xl px-2 py-2 w-full max-w-sm shadow-nav">
-        <ul className="flex items-center justify-around">
-          {TABS.map(({ href, icon: Icon, label }) => {
+    <div
+      className="fixed bottom-0 inset-x-0 z-50 flex justify-center"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
+      <nav className="glass-nav border-t border-glass-border w-full max-w-sm shadow-nav">
+        <ul className="flex items-center justify-around px-1 py-1">
+          {TABS.map(({ href, icon: Icon, label, badge }) => {
             const active = pathname.startsWith(href)
+            const count  = badge ? queue.length : 0
+
             return (
-              <li key={href}>
+              <li key={href} className="flex-1">
                 <Link
                   href={href}
-                  className={cn(
-                    'flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all duration-200',
-                    active
-                      ? 'text-white'
-                      : 'text-text-muted'
-                  )}
+                  className="flex flex-col items-center gap-1 py-2 relative"
                 >
-                  <span className={cn(
-                    'flex items-center justify-center w-10 h-10 rounded-2xl transition-all',
-                    active
-                      ? 'bg-accent-purple shadow-glow-sm'
-                      : 'bg-transparent'
-                  )}>
-                    <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
+                  {/* Active indicator line — YouTube Music style */}
+                  {active && (
+                    <span className="absolute top-0 inset-x-4 h-0.5 rounded-full bg-accent-teal" />
+                  )}
+
+                  {/* Icon + badge */}
+                  <span className="relative">
+                    <Icon
+                      size={22}
+                      strokeWidth={active ? 2.5 : 1.8}
+                      className={cn(
+                        'transition-colors',
+                        active ? 'text-accent-teal' : 'text-text-muted'
+                      )}
+                    />
+                    {count > 0 && (
+                      <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 rounded-full bg-accent-pink text-white text-[10px] font-bold flex items-center justify-center px-0.5">
+                        {count > 99 ? '99+' : count}
+                      </span>
+                    )}
                   </span>
+
+                  {/* Label */}
                   <span className={cn(
                     'text-[10px] font-medium leading-none',
-                    active ? 'text-white' : 'text-text-muted'
+                    active ? 'text-accent-teal' : 'text-text-muted'
                   )}>
                     {label}
                   </span>

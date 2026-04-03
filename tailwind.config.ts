@@ -20,7 +20,7 @@ const config: Config = {
           purple: '#A855F7',
           pink:   '#EC4899',
           lime:   '#A3E635',
-          teal:   '#2DD4BF',
+          teal:   '#00D2CC',  // Spotify/YouTube teal for active nav
         },
         text: {
           primary:   '#FFFFFF',

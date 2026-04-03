@@ -27,15 +27,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Ambient background glow */}
         <div className="ambient-bg" aria-hidden />
 
-        {/* Floating mini-player (hides itself on /now-playing) */}
-        <FloatingPlayer />
-
-        {/* Page content */}
-        <main className="relative z-10 mx-auto max-w-sm min-h-screen">
+        {/* Page content — pb accounts for mini-player + nav height */}
+        <main className="relative z-10 mx-auto max-w-sm min-h-screen pb-[148px]">
           {children}
         </main>
 
-        {/* Bottom nav (shown on main app pages) */}
+        {/* Floating mini-player — bottom, above nav (Spotify style) */}
+        <FloatingPlayer />
+
+        {/* Bottom navigation */}
         <BottomNav />
       </body>
     </html>
