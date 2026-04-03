@@ -5,105 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MBOX · Product Studio</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0d0d0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0d0d0f; color:#fff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; display:flex; flex-direction:column; min-height:100vh; }
 
-  header { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:12px; }
-  header h1 { font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
-  header p  { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+header { padding:16px 24px; border-bottom:1px solid rgba(255,255,255,0.08); }
+header h1 { font-size:16px; font-weight:600; letter-spacing:.04em; }
+header p  { font-size:11px; color:rgba(255,255,255,.35); margin-top:2px; }
 
-  .workspace { display: flex; flex: 1; overflow: hidden; }
+.workspace { display:flex; flex:1; overflow:hidden; }
 
-  .canvas-area {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    background: #111113; padding: 24px;
-  }
-  .canvas-wrap { position: relative; max-width: 540px; width: 100%; }
-  canvas { width: 100%; display: block; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,0.8); cursor: crosshair; }
-  .canvas-hint {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; pointer-events: none; gap: 6px;
-  }
-  .canvas-hint span { font-size: 32px; opacity: 0.15; }
-  .canvas-hint p   { font-size: 11px; color: rgba(255,255,255,0.25); }
+.canvas-area { flex:1; display:flex; align-items:center; justify-content:center; background:#111113; padding:24px; }
+.canvas-wrap { position:relative; width:100%; max-width:540px; }
+canvas { width:100%; display:block; border-radius:12px; box-shadow:0 24px 80px rgba(0,0,0,.8); cursor:crosshair; }
+.canvas-hint { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; gap:6px; }
+.canvas-hint .icon { font-size:36px; opacity:.12; }
+.canvas-hint p { font-size:11px; color:rgba(255,255,255,.25); }
 
-  .panel { width: 272px; flex-shrink: 0; background: #0d0d0f; border-left: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; }
-  .panel-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 22px; }
-  .panel-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px; }
+.panel { width:272px; flex-shrink:0; background:#0d0d0f; border-left:1px solid rgba(255,255,255,.08); display:flex; flex-direction:column; }
+.panel-body { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:22px; }
+.panel-footer { padding:16px 20px; border-top:1px solid rgba(255,255,255,.08); display:flex; flex-direction:column; gap:8px; }
 
-  section h2 { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
+section h2 { font-size:10px; font-weight:600; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.12em; margin-bottom:10px; }
 
-  .presets { display: flex; flex-direction: column; gap: 6px; }
-  .preset-btn { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; border: 1px solid transparent; background: rgba(255,255,255,0.04); cursor: pointer; transition: all 0.15s; color: #fff; text-align: left; width: 100%; }
-  .preset-btn:hover { background: rgba(255,255,255,0.08); }
-  .preset-btn.active { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
-  .preset-swatch { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
-  .preset-name { font-size: 13px; }
-  .preset-check { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.5); }
+.ratio-btns { display:flex; gap:6px; }
+.ratio-btn { flex:1; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); color:rgba(255,255,255,.45); font-size:11px; cursor:pointer; transition:all .15s; }
+.ratio-btn.active { background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.2); }
 
-  .upload-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.18); background: transparent; color: rgba(255,255,255,0.45); font-size: 13px; cursor: pointer; transition: all 0.15s; }
-  .upload-btn:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
+.presets { display:flex; flex-direction:column; gap:6px; }
+.preset-btn { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid transparent; background:rgba(255,255,255,.04); cursor:pointer; transition:all .15s; color:#fff; text-align:left; width:100%; }
+.preset-btn:hover { background:rgba(255,255,255,.08); }
+.preset-btn.active { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.2); }
+.swatch { width:32px; height:32px; border-radius:6px; flex-shrink:0; }
+.pname { font-size:13px; }
+.pcheck { margin-left:auto; font-size:12px; color:rgba(255,255,255,.5); }
 
-  /* Remove BG button */
-  .rmbg-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(59,130,246,0.25)); color: #c4b5fd; font-size: 13px; cursor: pointer; transition: all 0.15s; margin-top: 8px; display:flex; align-items:center; justify-content:center; gap:6px; }
-  .rmbg-btn:hover:not(:disabled) { background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4)); }
-  .rmbg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.upload-btn { width:100%; padding:12px; border-radius:8px; border:1px dashed rgba(255,255,255,.2); background:transparent; color:rgba(255,255,255,.5); font-size:13px; cursor:pointer; transition:all .15s; }
+.upload-btn:hover { border-color:rgba(255,255,255,.4); color:rgba(255,255,255,.8); }
 
-  /* Progress */
-  .progress-wrap { margin-top: 8px; display:none; }
-  .progress-bar-bg { height: 3px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow:hidden; }
-  .progress-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#8b5cf6,#3b82f6); transition: width 0.3s; width: 0%; }
-  .progress-label { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 5px; text-align:center; }
+.rmbg-btn { width:100%; padding:10px; border-radius:8px; border:none; background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2)); color:#c4b5fd; font-size:13px; cursor:pointer; transition:all .15s; margin-top:8px; }
+.rmbg-btn:hover:not([disabled]) { background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(59,130,246,.35)); }
+.rmbg-btn[disabled] { opacity:.35; cursor:not-allowed; }
 
-  .scale-row { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 8px; margin-bottom: 4px; }
-  input[type=range] { width: 100%; accent-color: #8b5cf6; }
-  .hint-text { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 6px; }
+.prog-wrap { margin-top:8px; display:none; }
+.prog-bg { height:3px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden; }
+.prog-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#8b5cf6,#3b82f6); transition:width .3s; width:0%; }
+.prog-label { font-size:10px; color:rgba(255,255,255,.3); margin-top:4px; text-align:center; }
 
-  .remove-btn { width: 100%; padding: 6px; border-radius: 6px; border: none; background: rgba(239,68,68,0.1); color: #f87171; font-size: 12px; cursor: pointer; margin-top: 6px; transition: all 0.15s; }
-  .remove-btn:hover { background: rgba(239,68,68,0.2); }
+.scale-row { display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,.35); margin-top:10px; margin-bottom:4px; }
+input[type=range] { width:100%; accent-color:#8b5cf6; }
+.hint-text { font-size:11px; color:rgba(255,255,255,.25); margin-top:6px; }
 
-  .ratio-btns { display: flex; gap: 6px; margin-bottom: 4px; }
-  .ratio-btn { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.45); font-size: 11px; cursor: pointer; transition: all 0.15s; }
-  .ratio-btn.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+.remove-btn { width:100%; padding:6px; border-radius:6px; border:none; background:rgba(239,68,68,.1); color:#f87171; font-size:12px; cursor:pointer; margin-top:8px; transition:all .15s; }
+.remove-btn:hover { background:rgba(239,68,68,.2); }
 
-  .btn-secondary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 13px; cursor: pointer; transition: all 0.15s; }
-  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
-  .btn-primary { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #fff; color: #000; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-  .btn-primary:hover { background: rgba(255,255,255,0.88); }
-
-  /* Status badge */
-  .badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; padding:2px 8px; border-radius:99px; background:rgba(34,197,94,0.15); color:#4ade80; margin-left:auto; }
-  .badge.processing { background:rgba(139,92,246,0.15); color:#a78bfa; }
+.btn-secondary { width:100%; padding:10px; border-radius:8px; border:none; background:rgba(255,255,255,.07); color:rgba(255,255,255,.65); font-size:13px; cursor:pointer; transition:all .15s; }
+.btn-secondary:hover { background:rgba(255,255,255,.12); }
+.btn-primary { width:100%; padding:12px; border-radius:8px; border:none; background:#fff; color:#000; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-primary:hover { background:rgba(255,255,255,.88); }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>Product Studio</h1>
-    <p>MBOX · Background Removal + Luxury Compositor · 1080px</p>
-  </div>
+  <h1>Product Studio</h1>
+  <p>MBOX · Background Removal + Luxury Compositor</p>
 </header>
 
 <div class="workspace">
+
+  <!-- Canvas -->
   <div class="canvas-area">
     <div class="canvas-wrap" id="canvasWrap">
       <canvas id="cv" width="1080" height="1080"></canvas>
       <div class="canvas-hint" id="hint">
-        <span>+</span>
+        <div class="icon">＋</div>
         <p>Upload product image to start</p>
       </div>
     </div>
   </div>
 
+  <!-- Panel -->
   <div class="panel">
     <div class="panel-body">
 
       <section>
         <h2>Output Size</h2>
         <div class="ratio-btns">
-          <button class="ratio-btn active" onclick="setRatio('1:1')">1:1 · 1080×1080</button>
-          <button class="ratio-btn" onclick="setRatio('4:5')">4:5 · 1080×1350</button>
+          <button class="ratio-btn active" id="btn11">1:1 · 1080×1080</button>
+          <button class="ratio-btn"        id="btn45">4:5 · 1080×1350</button>
         </div>
       </section>
 
@@ -116,18 +105,12 @@
         <h2>Product Image</h2>
         <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" style="display:none">
         <button class="upload-btn" id="uploadBtn">+ Upload PNG / JPG / WebP</button>
-
-        <!-- Remove BG -->
-        <button class="rmbg-btn" id="rmbgBtn" disabled>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M8 12h8M12 8v8"/></svg>
-          Remove Background (AI)
-        </button>
-        <div class="progress-wrap" id="progressWrap">
-          <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-          <div class="progress-label" id="progressLabel">Loading AI model…</div>
+        <button class="rmbg-btn" id="rmbgBtn" disabled>✦ Remove Background (AI)</button>
+        <div class="prog-wrap" id="progWrap">
+          <div class="prog-bg"><div class="prog-fill" id="progFill"></div></div>
+          <div class="prog-label" id="progLabel">กำลังโหลด model…</div>
         </div>
-
-        <div id="productControls" style="display:none; margin-top:12px;">
+        <div id="productControls" style="display:none">
           <div class="scale-row"><span>Scale</span><span id="scaleVal">65%</span></div>
           <input type="range" id="scaleRange" min="5" max="200" value="65">
           <p class="hint-text">Drag · Scroll to zoom</p>
@@ -136,205 +119,234 @@
       </section>
 
     </div>
-
     <div class="panel-footer">
       <button class="btn-secondary" id="exportBG">Export Background Only</button>
-      <button class="btn-primary" id="exportFull">Export PNG</button>
+      <button class="btn-primary"   id="exportFull">Export PNG</button>
     </div>
   </div>
 </div>
 
-<script type="module">
-// ─── Background removal library (runs 100% in browser via WASM) ──────────────
-import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser/index.mjs'
-
-// ─── Presets ──────────────────────────────────────────────────────────────────
-const PRESETS = [
-  { name: 'Charcoal Luxe',  top: '#111116', mid: '#363640', bottom: '#d8d8e0', spot: 0.22 },
-  { name: 'Dark Drama',     top: '#0a0a0a', mid: '#2a2a2e', bottom: '#e8e8ec', spot: 0.18 },
-  { name: 'Noir Silver',    top: '#050508', mid: '#1e1e24', bottom: '#f0f0f4', spot: 0.25 },
-  { name: 'Deep Midnight',  top: '#060610', mid: '#1a1a2e', bottom: '#c8c8d8', spot: 0.20 },
+<script>
+// ─── Config ───────────────────────────────────────────────────────────────────
+var PRESETS = [
+  { name:'Charcoal Luxe',  top:'#111116', mid:'#363640', bot:'#d8d8e0', spot:.22 },
+  { name:'Dark Drama',     top:'#0a0a0a', mid:'#2a2a2e', bot:'#e8e8ec', spot:.18 },
+  { name:'Noir Silver',    top:'#050508', mid:'#1e1e24', bot:'#f0f0f4', spot:.25 },
+  { name:'Deep Midnight',  top:'#060610', mid:'#1a1a2e', bot:'#c8c8d8', spot:.20 },
 ]
-let activePreset = 0
-let ratio = '1:1'
-let W = 1080, H = 1080
-let product = null   // { img, x, y, scale }
-let dragging = false, dragOx = 0, dragOy = 0
+var activePreset = 0
+var W = 1080, H = 1080
+var product = null   // { img, x, y, scale }
+var dragging = false, dragOx = 0, dragOy = 0
+var rawFile  = null
 
-const cv       = document.getElementById('cv')
-const hint     = document.getElementById('hint')
-const rmbgBtn  = document.getElementById('rmbgBtn')
-const progressWrap = document.getElementById('progressWrap')
-const progressFill = document.getElementById('progressFill')
-const progressLabel= document.getElementById('progressLabel')
-const productCtrl  = document.getElementById('productControls')
-const scaleRange   = document.getElementById('scaleRange')
-const scaleVal     = document.getElementById('scaleVal')
-const fileInput    = document.getElementById('fileInput')
-const uploadBtn    = document.getElementById('uploadBtn')
+// ─── Elements ────────────────────────────────────────────────────────────────
+var cv          = document.getElementById('cv')
+var hint        = document.getElementById('hint')
+var fileInput   = document.getElementById('fileInput')
+var uploadBtn   = document.getElementById('uploadBtn')
+var rmbgBtn     = document.getElementById('rmbgBtn')
+var progWrap    = document.getElementById('progWrap')
+var progFill    = document.getElementById('progFill')
+var progLabel   = document.getElementById('progLabel')
+var productCtrl = document.getElementById('productControls')
+var scaleRange  = document.getElementById('scaleRange')
+var scaleVal    = document.getElementById('scaleVal')
 
-// ─── Ratio ────────────────────────────────────────────────────────────────────
-window.setRatio = r => {
-  ratio = r
-  W = 1080; H = r === '4:5' ? 1350 : 1080
-  cv.width = W; cv.height = H
-  document.getElementById('canvasWrap').style.aspectRatio = `${W}/${H}`
-  if (product) { product.x = W/2; product.y = H/2 }
-  document.querySelectorAll('.ratio-btn').forEach((b,i) =>
-    b.classList.toggle('active', (i===0&&r==='1:1')||(i===1&&r==='4:5')))
-  render()
-}
-
-// ─── Draw background ──────────────────────────────────────────────────────────
+// ─── Background draw ─────────────────────────────────────────────────────────
 function drawBG(ctx, w, h, p) {
-  const g = ctx.createLinearGradient(0, 0, 0, h)
-  g.addColorStop(0, p.top); g.addColorStop(0.42, p.mid); g.addColorStop(1, p.bottom)
+  var g = ctx.createLinearGradient(0,0,0,h)
+  g.addColorStop(0, p.top); g.addColorStop(.42, p.mid); g.addColorStop(1, p.bot)
   ctx.fillStyle = g; ctx.fillRect(0,0,w,h)
 
-  const cx=w*.5, cy=h*.5, r=Math.max(w,h)
-  const sg = ctx.createRadialGradient(cx,cy,0,cx,cy,r*.68)
-  sg.addColorStop(0,`rgba(255,255,255,${p.spot})`); sg.addColorStop(.5,'rgba(255,255,255,.04)'); sg.addColorStop(1,'rgba(0,0,0,0)')
+  var cx=w*.5, cy=h*.5, r=Math.max(w,h)
+  var sg = ctx.createRadialGradient(cx,cy,0,cx,cy,r*.68)
+  sg.addColorStop(0,'rgba(255,255,255,'+p.spot+')')
+  sg.addColorStop(.5,'rgba(255,255,255,.04)')
+  sg.addColorStop(1,'rgba(0,0,0,0)')
   ctx.fillStyle=sg; ctx.fillRect(0,0,w,h)
 
-  const vg = ctx.createRadialGradient(cx,cy,r*.28,cx,cy,r*.88)
+  var vg = ctx.createRadialGradient(cx,cy,r*.28,cx,cy,r*.88)
   vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.52)')
   ctx.fillStyle=vg; ctx.fillRect(0,0,w,h)
 }
 
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
-  const ctx = cv.getContext('2d')
+  var ctx = cv.getContext('2d')
   drawBG(ctx, W, H, PRESETS[activePreset])
   if (product) {
-    const pw = product.img.naturalWidth  * product.scale
-    const ph = product.img.naturalHeight * product.scale
+    var pw = product.img.naturalWidth  * product.scale
+    var ph = product.img.naturalHeight * product.scale
     ctx.save()
-    // subtle drop shadow
-    ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 30
+    ctx.shadowColor='rgba(0,0,0,.65)'; ctx.shadowBlur=70; ctx.shadowOffsetY=28
     ctx.drawImage(product.img, product.x-pw/2, product.y-ph/2, pw, ph)
     ctx.restore()
   }
 }
 
+// ─── Ratio buttons ────────────────────────────────────────────────────────────
+document.getElementById('btn11').addEventListener('click', function() {
+  W=1080; H=1080; cv.width=W; cv.height=H
+  document.getElementById('canvasWrap').style.aspectRatio='1/1'
+  document.getElementById('btn11').classList.add('active')
+  document.getElementById('btn45').classList.remove('active')
+  if(product){ product.x=W/2; product.y=H*.45 }
+  render()
+})
+document.getElementById('btn45').addEventListener('click', function() {
+  W=1080; H=1350; cv.width=W; cv.height=H
+  document.getElementById('canvasWrap').style.aspectRatio='1080/1350'
+  document.getElementById('btn45').classList.add('active')
+  document.getElementById('btn11').classList.remove('active')
+  if(product){ product.x=W/2; product.y=H*.42 }
+  render()
+})
+
 // ─── Preset buttons ───────────────────────────────────────────────────────────
-const presetsEl = document.getElementById('presets')
-PRESETS.forEach((p,i) => {
-  const btn = document.createElement('button')
-  btn.className = 'preset-btn'+(i===0?' active':'')
-  btn.innerHTML = `<div class="preset-swatch" style="background:linear-gradient(to bottom,${p.top},${p.mid},${p.bottom})"></div><span class="preset-name">${p.name}</span><span class="preset-check">${i===0?'✓':''}</span>`
-  btn.onclick = () => {
-    activePreset=i
-    document.querySelectorAll('.preset-btn').forEach((b,j)=>{b.classList.toggle('active',j===i);b.querySelector('.preset-check').textContent=j===i?'✓':''})
+var presetsEl = document.getElementById('presets')
+PRESETS.forEach(function(p,i) {
+  var btn = document.createElement('button')
+  btn.className = 'preset-btn' + (i===0?' active':'')
+  btn.innerHTML = '<div class="swatch" style="background:linear-gradient(to bottom,'+p.top+','+p.mid+','+p.bot+')"></div>'
+                + '<span class="pname">'+p.name+'</span>'
+                + '<span class="pcheck">'+(i===0?'✓':'')+'</span>'
+  btn.addEventListener('click', function() {
+    activePreset = i
+    document.querySelectorAll('.preset-btn').forEach(function(b,j){
+      b.classList.toggle('active', j===i)
+      b.querySelector('.pcheck').textContent = j===i ? '✓' : ''
+    })
     render()
-  }
+  })
   presetsEl.appendChild(btn)
 })
 
 // ─── Upload ───────────────────────────────────────────────────────────────────
-let rawFile = null   // keep original file for re-processing
+uploadBtn.addEventListener('click', function() { fileInput.click() })
 
-uploadBtn.onclick = () => fileInput.click()
-fileInput.onchange = e => {
-  const file = e.target.files[0]; if(!file) return
+fileInput.addEventListener('change', function() {
+  var file = fileInput.files[0]; if(!file) return
   rawFile = file
-  const reader = new FileReader()
-  reader.onload = ev => loadImage(ev.target.result)
+  var reader = new FileReader()
+  reader.onload = function(e) { loadImageSrc(e.target.result) }
   reader.readAsDataURL(file)
   rmbgBtn.disabled = false
-}
+})
 
-function loadImage(src) {
-  const img = new Image()
-  img.onload = () => {
-    product = { img, x: W/2, y: H*.45, scale: calcAutoScale(img) }
-    scaleRange.value = Math.round(product.scale*100)
+function loadImageSrc(src) {
+  var img = new Image()
+  img.onload = function() {
+    var scale = Math.min((H*.65)/img.naturalHeight, (W*.75)/img.naturalWidth, 1.5)
+    product = { img:img, x:W/2, y:H*.45, scale:scale }
+    scaleRange.value = Math.round(scale*100)
     scaleVal.textContent = scaleRange.value+'%'
-    productCtrl.style.display='block'
-    hint.style.display='none'
-    uploadBtn.textContent='↺ Replace Image'
+    productCtrl.style.display = 'block'
+    hint.style.display = 'none'
+    uploadBtn.textContent = '↺ Replace Image'
     render()
   }
   img.src = src
 }
 
-function calcAutoScale(img) {
-  // auto-fit so product fills ~65% of canvas height
-  const target = H * 0.65
-  return Math.min(target/img.naturalHeight, target/img.naturalWidth, 1.5)
-}
-
-document.getElementById('removeBtn').onclick = () => {
+document.getElementById('removeBtn').addEventListener('click', function() {
   product=null; rawFile=null
   productCtrl.style.display='none'
   hint.style.display='flex'
   uploadBtn.textContent='+ Upload PNG / JPG / WebP'
-  fileInput.value=''; rmbgBtn.disabled=true
+  fileInput.value=''
+  rmbgBtn.disabled=true
   render()
-}
+})
 
-scaleRange.oninput = () => {
+scaleRange.addEventListener('input', function() {
   if(!product) return
-  product.scale = scaleRange.value/100
-  scaleVal.textContent = scaleRange.value+'%'
+  product.scale = this.value/100
+  scaleVal.textContent = this.value+'%'
   render()
-}
+})
 
-// ─── Remove Background ────────────────────────────────────────────────────────
-rmbgBtn.onclick = async () => {
+// ─── Remove Background (lazy-loaded ESM) ─────────────────────────────────────
+rmbgBtn.addEventListener('click', function() {
   if(!rawFile) return
   rmbgBtn.disabled = true
-  progressWrap.style.display = 'block'
-  progressFill.style.width = '0%'
-  progressLabel.textContent = 'Downloading AI model… (first time ~30s)'
+  progWrap.style.display = 'block'
+  progFill.style.width = '0%'
+  progLabel.textContent = 'กำลังโหลด AI model… (ครั้งแรก ~30 วินาที)'
 
-  try {
-    const blob = await removeBackground(rawFile, {
-      progress: (key, current, total) => {
-        const pct = total > 0 ? Math.round(current/total*100) : 0
-        progressFill.style.width = pct+'%'
-        if(key.includes('fetch')) progressLabel.textContent = `Downloading model… ${pct}%`
-        else progressLabel.textContent = `Removing background… ${pct}%`
-      }
+  // Dynamic import — works in Chrome/Edge even on file://
+  import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser/index.mjs')
+    .then(function(mod) {
+      return mod.removeBackground(rawFile, {
+        progress: function(key, current, total) {
+          var pct = total > 0 ? Math.round(current/total*100) : 0
+          progFill.style.width = pct+'%'
+          progLabel.textContent = (key.includes('fetch') ? 'Downloading… ' : 'Processing… ') + pct+'%'
+        }
+      })
     })
-    progressFill.style.width = '100%'
-    progressLabel.textContent = 'Done!'
-    const url = URL.createObjectURL(blob)
-    loadImage(url)
-    setTimeout(()=>{ progressWrap.style.display='none' }, 1500)
-  } catch(err) {
-    progressLabel.textContent = 'Error: '+err.message
-    console.error(err)
-  } finally {
-    rmbgBtn.disabled = false
-  }
-}
+    .then(function(blob) {
+      progFill.style.width = '100%'
+      progLabel.textContent = 'เสร็จแล้ว! ✓'
+      loadImageSrc(URL.createObjectURL(blob))
+      setTimeout(function(){ progWrap.style.display='none' }, 2000)
+    })
+    .catch(function(err) {
+      progLabel.textContent = 'Error: '+err.message
+      console.error(err)
+    })
+    .finally(function() {
+      rmbgBtn.disabled = false
+    })
+})
 
 // ─── Drag ─────────────────────────────────────────────────────────────────────
 function cvXY(e) {
-  const r=cv.getBoundingClientRect()
+  var r = cv.getBoundingClientRect()
   return { x:(e.clientX-r.left)*W/r.width, y:(e.clientY-r.top)*H/r.height }
 }
-cv.addEventListener('mousedown', e=>{ if(!product)return; const p=cvXY(e); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true })
-window.addEventListener('mousemove', e=>{ if(!dragging||!product)return; const p=cvXY(e); product.x=p.x-dragOx; product.y=p.y-dragOy; render() })
-window.addEventListener('mouseup', ()=>dragging=false)
-cv.addEventListener('wheel', e=>{ e.preventDefault(); if(!product)return; const d=e.deltaY>0?.94:1.06; product.scale=Math.max(.05,Math.min(5,product.scale*d)); scaleRange.value=Math.round(product.scale*100); scaleVal.textContent=scaleRange.value+'%'; render() },{ passive:false })
+cv.addEventListener('mousedown', function(e) {
+  if(!product) return
+  var p=cvXY(e); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true
+})
+window.addEventListener('mousemove', function(e) {
+  if(!dragging||!product) return
+  var p=cvXY(e); product.x=p.x-dragOx; product.y=p.y-dragOy; render()
+})
+window.addEventListener('mouseup', function() { dragging=false })
+cv.addEventListener('wheel', function(e) {
+  e.preventDefault()
+  if(!product) return
+  var d=e.deltaY>0?.94:1.06
+  product.scale=Math.max(.05,Math.min(5,product.scale*d))
+  scaleRange.value=Math.round(product.scale*100)
+  scaleVal.textContent=scaleRange.value+'%'
+  render()
+}, { passive:false })
 
 // ─── Touch ────────────────────────────────────────────────────────────────────
-cv.addEventListener('touchstart', e=>{ if(!product||e.touches.length!==1)return; const t=e.touches[0],p=cvXY(t); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true },{passive:true})
-cv.addEventListener('touchmove', e=>{ if(!dragging||!product||e.touches.length!==1)return; const t=e.touches[0],p=cvXY(t); product.x=p.x-dragOx; product.y=p.y-dragOy; render() },{passive:true})
-cv.addEventListener('touchend', ()=>dragging=false)
+cv.addEventListener('touchstart', function(e) {
+  if(!product||e.touches.length!==1) return
+  var t=e.touches[0], p=cvXY(t); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true
+}, {passive:true})
+cv.addEventListener('touchmove', function(e) {
+  if(!dragging||!product||e.touches.length!==1) return
+  var t=e.touches[0], p=cvXY(t); product.x=p.x-dragOx; product.y=p.y-dragOy; render()
+}, {passive:true})
+cv.addEventListener('touchend', function() { dragging=false })
 
 // ─── Export ───────────────────────────────────────────────────────────────────
-function dl(url,name){ const a=document.createElement('a'); a.href=url; a.download=name; a.click() }
-
-document.getElementById('exportBG').onclick = () => {
-  const off=document.createElement('canvas'); off.width=W; off.height=H
+function dl(url, name) {
+  var a=document.createElement('a'); a.href=url; a.download=name; a.click()
+}
+document.getElementById('exportBG').addEventListener('click', function() {
+  var off=document.createElement('canvas'); off.width=W; off.height=H
   drawBG(off.getContext('2d'),W,H,PRESETS[activePreset])
-  dl(off.toDataURL('image/png'),`mbox-bg-${PRESETS[activePreset].name.replace(/ /g,'-')}-${W}x${H}.png`)
-}
-document.getElementById('exportFull').onclick = () => {
-  dl(cv.toDataURL('image/png'),`mbox-echo-pro-${PRESETS[activePreset].name.replace(/ /g,'-')}-${W}x${H}.png`)
-}
+  dl(off.toDataURL('image/png'), 'mbox-bg-'+PRESETS[activePreset].name.replace(/ /g,'-')+'-'+W+'x'+H+'.png')
+})
+document.getElementById('exportFull').addEventListener('click', function() {
+  dl(cv.toDataURL('image/png'), 'mbox-product-'+PRESETS[activePreset].name.replace(/ /g,'-')+'-'+W+'x'+H+'.png')
+})
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 render()
