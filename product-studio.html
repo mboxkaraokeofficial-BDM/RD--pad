@@ -8,139 +8,97 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0d0d0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
 
-  header { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  header { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:12px; }
   header h1 { font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
   header p  { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
 
   .workspace { display: flex; flex: 1; overflow: hidden; }
 
-  /* Canvas area */
   .canvas-area {
-    flex: 1;
-    display: flex; align-items: center; justify-content: center;
+    flex: 1; display: flex; align-items: center; justify-content: center;
     background: #111113; padding: 24px;
   }
-  .canvas-wrap { position: relative; max-width: 540px; max-height: 540px; width: 100%; aspect-ratio: 1; }
-  canvas {
-    width: 100%; height: 100%;
-    border-radius: 12px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.8);
-    cursor: crosshair;
-    display: block;
-  }
+  .canvas-wrap { position: relative; max-width: 540px; width: 100%; }
+  canvas { width: 100%; display: block; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,0.8); cursor: crosshair; }
   .canvas-hint {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    pointer-events: none; gap: 6px;
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; pointer-events: none; gap: 6px;
   }
   .canvas-hint span { font-size: 32px; opacity: 0.15; }
   .canvas-hint p   { font-size: 11px; color: rgba(255,255,255,0.25); }
 
-  /* Side panel */
-  .panel {
-    width: 272px; flex-shrink: 0;
-    background: #0d0d0f;
-    border-left: 1px solid rgba(255,255,255,0.08);
-    display: flex; flex-direction: column;
-  }
-  .panel-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+  .panel { width: 272px; flex-shrink: 0; background: #0d0d0f; border-left: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; }
+  .panel-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 22px; }
   .panel-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px; }
 
-  section h2 {
-    font-size: 10px; font-weight: 600;
-    color: rgba(255,255,255,0.35);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    margin-bottom: 10px;
-  }
+  section h2 { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
 
-  /* Preset buttons */
   .presets { display: flex; flex-direction: column; gap: 6px; }
-  .preset-btn {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; border-radius: 8px;
-    border: 1px solid transparent;
-    background: rgba(255,255,255,0.04);
-    cursor: pointer; transition: all 0.15s; color: #fff; text-align: left; width: 100%;
-  }
+  .preset-btn { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; border: 1px solid transparent; background: rgba(255,255,255,0.04); cursor: pointer; transition: all 0.15s; color: #fff; text-align: left; width: 100%; }
   .preset-btn:hover { background: rgba(255,255,255,0.08); }
   .preset-btn.active { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
   .preset-swatch { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
   .preset-name { font-size: 13px; }
   .preset-check { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.5); }
 
-  /* Upload */
-  .upload-btn {
-    width: 100%; padding: 12px;
-    border-radius: 8px;
-    border: 1px dashed rgba(255,255,255,0.18);
-    background: transparent; color: rgba(255,255,255,0.45);
-    font-size: 13px; cursor: pointer; transition: all 0.15s;
-  }
+  .upload-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.18); background: transparent; color: rgba(255,255,255,0.45); font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .upload-btn:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
 
+  /* Remove BG button */
+  .rmbg-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(59,130,246,0.25)); color: #c4b5fd; font-size: 13px; cursor: pointer; transition: all 0.15s; margin-top: 8px; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .rmbg-btn:hover:not(:disabled) { background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4)); }
+  .rmbg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Progress */
+  .progress-wrap { margin-top: 8px; display:none; }
+  .progress-bar-bg { height: 3px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow:hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#8b5cf6,#3b82f6); transition: width 0.3s; width: 0%; }
+  .progress-label { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 5px; text-align:center; }
+
   .scale-row { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 8px; margin-bottom: 4px; }
-  input[type=range] { width: 100%; accent-color: #fff; }
+  input[type=range] { width: 100%; accent-color: #8b5cf6; }
   .hint-text { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 6px; }
 
-  .remove-btn {
-    width: 100%; padding: 6px;
-    border-radius: 6px; border: none;
-    background: rgba(239,68,68,0.1); color: #f87171;
-    font-size: 12px; cursor: pointer; margin-top: 6px; transition: all 0.15s;
-  }
+  .remove-btn { width: 100%; padding: 6px; border-radius: 6px; border: none; background: rgba(239,68,68,0.1); color: #f87171; font-size: 12px; cursor: pointer; margin-top: 6px; transition: all 0.15s; }
   .remove-btn:hover { background: rgba(239,68,68,0.2); }
 
-  /* Export */
-  .btn-secondary {
-    width: 100%; padding: 10px;
-    border-radius: 8px; border: none;
-    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65);
-    font-size: 13px; cursor: pointer; transition: all 0.15s;
-  }
+  .ratio-btns { display: flex; gap: 6px; margin-bottom: 4px; }
+  .ratio-btn { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.45); font-size: 11px; cursor: pointer; transition: all 0.15s; }
+  .ratio-btn.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+
+  .btn-secondary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .btn-secondary:hover { background: rgba(255,255,255,0.12); }
-  .btn-primary {
-    width: 100%; padding: 12px;
-    border-radius: 8px; border: none;
-    background: #fff; color: #000;
-    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
-  }
+  .btn-primary { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #fff; color: #000; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .btn-primary:hover { background: rgba(255,255,255,0.88); }
 
-  /* Ratio toggle */
-  .ratio-btns { display: flex; gap: 6px; margin-bottom: 8px; }
-  .ratio-btn {
-    flex: 1; padding: 6px;
-    border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.45);
-    font-size: 11px; cursor: pointer; transition: all 0.15s;
-  }
-  .ratio-btn.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+  /* Status badge */
+  .badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; padding:2px 8px; border-radius:99px; background:rgba(34,197,94,0.15); color:#4ade80; margin-left:auto; }
+  .badge.processing { background:rgba(139,92,246,0.15); color:#a78bfa; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Product Studio</h1>
-  <p>MBOX · Luxury Background Generator</p>
+  <div>
+    <h1>Product Studio</h1>
+    <p>MBOX · Background Removal + Luxury Compositor · 1080px</p>
+  </div>
 </header>
 
 <div class="workspace">
-  <!-- Canvas -->
   <div class="canvas-area">
-    <div class="canvas-wrap">
+    <div class="canvas-wrap" id="canvasWrap">
       <canvas id="cv" width="1080" height="1080"></canvas>
       <div class="canvas-hint" id="hint">
         <span>+</span>
-        <p>Upload product image to compose</p>
+        <p>Upload product image to start</p>
       </div>
     </div>
   </div>
 
-  <!-- Panel -->
   <div class="panel">
     <div class="panel-body">
 
-      <!-- Output size -->
       <section>
         <h2>Output Size</h2>
         <div class="ratio-btns">
@@ -149,25 +107,31 @@
         </div>
       </section>
 
-      <!-- Background -->
       <section>
         <h2>Background Style</h2>
         <div class="presets" id="presets"></div>
       </section>
 
-      <!-- Product -->
       <section>
         <h2>Product Image</h2>
         <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" style="display:none">
         <button class="upload-btn" id="uploadBtn">+ Upload PNG / JPG / WebP</button>
-        <div id="productControls" style="display:none; margin-top:10px;">
-          <div class="scale-row">
-            <span>Scale</span>
-            <span id="scaleVal">70%</span>
-          </div>
-          <input type="range" id="scaleRange" min="5" max="200" value="70">
-          <p class="hint-text">Drag to reposition · Scroll to zoom</p>
-          <button class="remove-btn" id="removeBtn">Remove image</button>
+
+        <!-- Remove BG -->
+        <button class="rmbg-btn" id="rmbgBtn" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M8 12h8M12 8v8"/></svg>
+          Remove Background (AI)
+        </button>
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+          <div class="progress-label" id="progressLabel">Loading AI model…</div>
+        </div>
+
+        <div id="productControls" style="display:none; margin-top:12px;">
+          <div class="scale-row"><span>Scale</span><span id="scaleVal">65%</span></div>
+          <input type="range" id="scaleRange" min="5" max="200" value="65">
+          <p class="hint-text">Drag · Scroll to zoom</p>
+          <button class="remove-btn" id="removeBtn">✕ Remove image</button>
         </div>
       </section>
 
@@ -180,211 +144,196 @@
   </div>
 </div>
 
-<script>
-// ─── Presets ─────────────────────────────────────────────────────────────────
+<script type="module">
+// ─── Background removal library (runs 100% in browser via WASM) ──────────────
+import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser/index.mjs'
+
+// ─── Presets ──────────────────────────────────────────────────────────────────
 const PRESETS = [
   { name: 'Charcoal Luxe',  top: '#111116', mid: '#363640', bottom: '#d8d8e0', spot: 0.22 },
   { name: 'Dark Drama',     top: '#0a0a0a', mid: '#2a2a2e', bottom: '#e8e8ec', spot: 0.18 },
   { name: 'Noir Silver',    top: '#050508', mid: '#1e1e24', bottom: '#f0f0f4', spot: 0.25 },
   { name: 'Deep Midnight',  top: '#060610', mid: '#1a1a2e', bottom: '#c8c8d8', spot: 0.20 },
 ]
-
 let activePreset = 0
-let ratio = '1:1'  // '1:1' or '4:5'
-let product = null // { img, x, y, scale }
-let dragging = false
-let dragOx = 0, dragOy = 0
-
-// ─── Canvas setup ────────────────────────────────────────────────────────────
-const cv = document.getElementById('cv')
+let ratio = '1:1'
 let W = 1080, H = 1080
+let product = null   // { img, x, y, scale }
+let dragging = false, dragOx = 0, dragOy = 0
 
-function setRatio(r) {
+const cv       = document.getElementById('cv')
+const hint     = document.getElementById('hint')
+const rmbgBtn  = document.getElementById('rmbgBtn')
+const progressWrap = document.getElementById('progressWrap')
+const progressFill = document.getElementById('progressFill')
+const progressLabel= document.getElementById('progressLabel')
+const productCtrl  = document.getElementById('productControls')
+const scaleRange   = document.getElementById('scaleRange')
+const scaleVal     = document.getElementById('scaleVal')
+const fileInput    = document.getElementById('fileInput')
+const uploadBtn    = document.getElementById('uploadBtn')
+
+// ─── Ratio ────────────────────────────────────────────────────────────────────
+window.setRatio = r => {
   ratio = r
-  if (r === '4:5') { W = 1080; H = 1350 }
-  else             { W = 1080; H = 1080 }
-  cv.width  = W
-  cv.height = H
-  // update canvas-wrap aspect ratio
-  cv.parentElement.style.aspectRatio = W + '/' + H
-  cv.parentElement.style.maxHeight   = r === '4:5' ? '675px' : '540px'
+  W = 1080; H = r === '4:5' ? 1350 : 1080
+  cv.width = W; cv.height = H
+  document.getElementById('canvasWrap').style.aspectRatio = `${W}/${H}`
   if (product) { product.x = W/2; product.y = H/2 }
-  document.querySelectorAll('.ratio-btn').forEach((b,i) => {
-    b.classList.toggle('active', (i === 0 && r==='1:1') || (i===1 && r==='4:5'))
-  })
+  document.querySelectorAll('.ratio-btn').forEach((b,i) =>
+    b.classList.toggle('active', (i===0&&r==='1:1')||(i===1&&r==='4:5')))
   render()
 }
 
-// ─── Draw background ─────────────────────────────────────────────────────────
+// ─── Draw background ──────────────────────────────────────────────────────────
 function drawBG(ctx, w, h, p) {
-  // Main vertical gradient
   const g = ctx.createLinearGradient(0, 0, 0, h)
-  g.addColorStop(0,    p.top)
-  g.addColorStop(0.42, p.mid)
-  g.addColorStop(1,    p.bottom)
-  ctx.fillStyle = g
-  ctx.fillRect(0, 0, w, h)
+  g.addColorStop(0, p.top); g.addColorStop(0.42, p.mid); g.addColorStop(1, p.bottom)
+  ctx.fillStyle = g; ctx.fillRect(0,0,w,h)
 
-  // Centre spotlight
-  const cx = w * 0.5, cy = h * 0.50
-  const sg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w,h)*0.68)
-  sg.addColorStop(0,   `rgba(255,255,255,${p.spot})`)
-  sg.addColorStop(0.5, 'rgba(255,255,255,0.04)')
-  sg.addColorStop(1,   'rgba(0,0,0,0)')
-  ctx.fillStyle = sg
-  ctx.fillRect(0, 0, w, h)
+  const cx=w*.5, cy=h*.5, r=Math.max(w,h)
+  const sg = ctx.createRadialGradient(cx,cy,0,cx,cy,r*.68)
+  sg.addColorStop(0,`rgba(255,255,255,${p.spot})`); sg.addColorStop(.5,'rgba(255,255,255,.04)'); sg.addColorStop(1,'rgba(0,0,0,0)')
+  ctx.fillStyle=sg; ctx.fillRect(0,0,w,h)
 
-  // Corner vignette
-  const vg = ctx.createRadialGradient(cx, cy, Math.max(w,h)*0.28, cx, cy, Math.max(w,h)*0.88)
-  vg.addColorStop(0, 'rgba(0,0,0,0)')
-  vg.addColorStop(1, 'rgba(0,0,0,0.52)')
-  ctx.fillStyle = vg
-  ctx.fillRect(0, 0, w, h)
+  const vg = ctx.createRadialGradient(cx,cy,r*.28,cx,cy,r*.88)
+  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.52)')
+  ctx.fillStyle=vg; ctx.fillRect(0,0,w,h)
 }
 
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   const ctx = cv.getContext('2d')
   drawBG(ctx, W, H, PRESETS[activePreset])
-
   if (product) {
-    ctx.save()
     const pw = product.img.naturalWidth  * product.scale
     const ph = product.img.naturalHeight * product.scale
-    ctx.drawImage(product.img, product.x - pw/2, product.y - ph/2, pw, ph)
+    ctx.save()
+    // subtle drop shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 30
+    ctx.drawImage(product.img, product.x-pw/2, product.y-ph/2, pw, ph)
     ctx.restore()
   }
 }
 
-// ─── Build preset buttons ─────────────────────────────────────────────────────
+// ─── Preset buttons ───────────────────────────────────────────────────────────
 const presetsEl = document.getElementById('presets')
-PRESETS.forEach((p, i) => {
+PRESETS.forEach((p,i) => {
   const btn = document.createElement('button')
-  btn.className = 'preset-btn' + (i === 0 ? ' active' : '')
-  btn.innerHTML = `
-    <div class="preset-swatch" style="background:linear-gradient(to bottom,${p.top},${p.mid},${p.bottom})"></div>
-    <span class="preset-name">${p.name}</span>
-    <span class="preset-check">${i === 0 ? '✓' : ''}</span>
-  `
+  btn.className = 'preset-btn'+(i===0?' active':'')
+  btn.innerHTML = `<div class="preset-swatch" style="background:linear-gradient(to bottom,${p.top},${p.mid},${p.bottom})"></div><span class="preset-name">${p.name}</span><span class="preset-check">${i===0?'✓':''}</span>`
   btn.onclick = () => {
-    activePreset = i
-    document.querySelectorAll('.preset-btn').forEach((b,j) => {
-      b.classList.toggle('active', j === i)
-      b.querySelector('.preset-check').textContent = j === i ? '✓' : ''
-    })
+    activePreset=i
+    document.querySelectorAll('.preset-btn').forEach((b,j)=>{b.classList.toggle('active',j===i);b.querySelector('.preset-check').textContent=j===i?'✓':''})
     render()
   }
   presetsEl.appendChild(btn)
 })
 
 // ─── Upload ───────────────────────────────────────────────────────────────────
-const fileInput  = document.getElementById('fileInput')
-const uploadBtn  = document.getElementById('uploadBtn')
-const productCtrl= document.getElementById('productControls')
-const scaleRange = document.getElementById('scaleRange')
-const scaleVal   = document.getElementById('scaleVal')
-const removeBtn  = document.getElementById('removeBtn')
-const hint       = document.getElementById('hint')
+let rawFile = null   // keep original file for re-processing
 
 uploadBtn.onclick = () => fileInput.click()
 fileInput.onchange = e => {
-  const file = e.target.files[0]; if (!file) return
+  const file = e.target.files[0]; if(!file) return
+  rawFile = file
   const reader = new FileReader()
-  reader.onload = ev => {
-    const img = new Image()
-    img.onload = () => {
-      product = { img, x: W/2, y: H/2, scale: 0.65 }
-      scaleRange.value = 65
-      scaleVal.textContent = '65%'
-      productCtrl.style.display = 'block'
-      hint.style.display = 'none'
-      uploadBtn.textContent = '↺ Replace Image'
-      render()
-    }
-    img.src = ev.target.result
-  }
+  reader.onload = ev => loadImage(ev.target.result)
   reader.readAsDataURL(file)
+  rmbgBtn.disabled = false
+}
+
+function loadImage(src) {
+  const img = new Image()
+  img.onload = () => {
+    product = { img, x: W/2, y: H*.45, scale: calcAutoScale(img) }
+    scaleRange.value = Math.round(product.scale*100)
+    scaleVal.textContent = scaleRange.value+'%'
+    productCtrl.style.display='block'
+    hint.style.display='none'
+    uploadBtn.textContent='↺ Replace Image'
+    render()
+  }
+  img.src = src
+}
+
+function calcAutoScale(img) {
+  // auto-fit so product fills ~65% of canvas height
+  const target = H * 0.65
+  return Math.min(target/img.naturalHeight, target/img.naturalWidth, 1.5)
+}
+
+document.getElementById('removeBtn').onclick = () => {
+  product=null; rawFile=null
+  productCtrl.style.display='none'
+  hint.style.display='flex'
+  uploadBtn.textContent='+ Upload PNG / JPG / WebP'
+  fileInput.value=''; rmbgBtn.disabled=true
+  render()
 }
 
 scaleRange.oninput = () => {
-  if (!product) return
-  product.scale = scaleRange.value / 100
-  scaleVal.textContent = scaleRange.value + '%'
+  if(!product) return
+  product.scale = scaleRange.value/100
+  scaleVal.textContent = scaleRange.value+'%'
   render()
 }
 
-removeBtn.onclick = () => {
-  product = null
-  productCtrl.style.display = 'none'
-  hint.style.display = 'flex'
-  uploadBtn.textContent = '+ Upload PNG / JPG / WebP'
-  fileInput.value = ''
-  render()
+// ─── Remove Background ────────────────────────────────────────────────────────
+rmbgBtn.onclick = async () => {
+  if(!rawFile) return
+  rmbgBtn.disabled = true
+  progressWrap.style.display = 'block'
+  progressFill.style.width = '0%'
+  progressLabel.textContent = 'Downloading AI model… (first time ~30s)'
+
+  try {
+    const blob = await removeBackground(rawFile, {
+      progress: (key, current, total) => {
+        const pct = total > 0 ? Math.round(current/total*100) : 0
+        progressFill.style.width = pct+'%'
+        if(key.includes('fetch')) progressLabel.textContent = `Downloading model… ${pct}%`
+        else progressLabel.textContent = `Removing background… ${pct}%`
+      }
+    })
+    progressFill.style.width = '100%'
+    progressLabel.textContent = 'Done!'
+    const url = URL.createObjectURL(blob)
+    loadImage(url)
+    setTimeout(()=>{ progressWrap.style.display='none' }, 1500)
+  } catch(err) {
+    progressLabel.textContent = 'Error: '+err.message
+    console.error(err)
+  } finally {
+    rmbgBtn.disabled = false
+  }
 }
 
-// ─── Drag & drop ──────────────────────────────────────────────────────────────
-function canvasXY(e) {
-  const r = cv.getBoundingClientRect()
-  return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }
+// ─── Drag ─────────────────────────────────────────────────────────────────────
+function cvXY(e) {
+  const r=cv.getBoundingClientRect()
+  return { x:(e.clientX-r.left)*W/r.width, y:(e.clientY-r.top)*H/r.height }
 }
+cv.addEventListener('mousedown', e=>{ if(!product)return; const p=cvXY(e); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true })
+window.addEventListener('mousemove', e=>{ if(!dragging||!product)return; const p=cvXY(e); product.x=p.x-dragOx; product.y=p.y-dragOy; render() })
+window.addEventListener('mouseup', ()=>dragging=false)
+cv.addEventListener('wheel', e=>{ e.preventDefault(); if(!product)return; const d=e.deltaY>0?.94:1.06; product.scale=Math.max(.05,Math.min(5,product.scale*d)); scaleRange.value=Math.round(product.scale*100); scaleVal.textContent=scaleRange.value+'%'; render() },{ passive:false })
 
-cv.addEventListener('mousedown', e => {
-  if (!product) return
-  const pos = canvasXY(e)
-  dragOx = pos.x - product.x; dragOy = pos.y - product.y; dragging = true
-})
-window.addEventListener('mousemove', e => {
-  if (!dragging || !product) return
-  const pos = canvasXY(e)
-  product.x = pos.x - dragOx; product.y = pos.y - dragOy
-  render()
-})
-window.addEventListener('mouseup', () => { dragging = false })
-
-cv.addEventListener('wheel', e => {
-  e.preventDefault()
-  if (!product) return
-  const d = e.deltaY > 0 ? 0.94 : 1.06
-  product.scale = Math.max(0.05, Math.min(5, product.scale * d))
-  scaleRange.value = Math.round(product.scale * 100)
-  scaleVal.textContent = scaleRange.value + '%'
-  render()
-}, { passive: false })
-
-// ─── Touch support ────────────────────────────────────────────────────────────
-let lastTouch = null
-cv.addEventListener('touchstart', e => {
-  if (!product || e.touches.length !== 1) return
-  const t = e.touches[0]
-  const pos = canvasXY(t)
-  dragOx = pos.x - product.x; dragOy = pos.y - product.y
-  dragging = true; lastTouch = t
-}, { passive: true })
-cv.addEventListener('touchmove', e => {
-  if (!dragging || !product || e.touches.length !== 1) return
-  const t = e.touches[0]
-  const pos = canvasXY(t)
-  product.x = pos.x - dragOx; product.y = pos.y - dragOy
-  render(); lastTouch = t
-}, { passive: true })
-cv.addEventListener('touchend', () => { dragging = false })
+// ─── Touch ────────────────────────────────────────────────────────────────────
+cv.addEventListener('touchstart', e=>{ if(!product||e.touches.length!==1)return; const t=e.touches[0],p=cvXY(t); dragOx=p.x-product.x; dragOy=p.y-product.y; dragging=true },{passive:true})
+cv.addEventListener('touchmove', e=>{ if(!dragging||!product||e.touches.length!==1)return; const t=e.touches[0],p=cvXY(t); product.x=p.x-dragOx; product.y=p.y-dragOy; render() },{passive:true})
+cv.addEventListener('touchend', ()=>dragging=false)
 
 // ─── Export ───────────────────────────────────────────────────────────────────
-function download(dataURL, name) {
-  const a = document.createElement('a')
-  a.href = dataURL; a.download = name; a.click()
-}
+function dl(url,name){ const a=document.createElement('a'); a.href=url; a.download=name; a.click() }
 
 document.getElementById('exportBG').onclick = () => {
-  const off = document.createElement('canvas')
-  off.width = W; off.height = H
-  const ctx = off.getContext('2d')
-  drawBG(ctx, W, H, PRESETS[activePreset])
-  download(off.toDataURL('image/png'), `mbox-bg-${PRESETS[activePreset].name.toLowerCase().replace(/ /g,'-')}-${W}x${H}.png`)
+  const off=document.createElement('canvas'); off.width=W; off.height=H
+  drawBG(off.getContext('2d'),W,H,PRESETS[activePreset])
+  dl(off.toDataURL('image/png'),`mbox-bg-${PRESETS[activePreset].name.replace(/ /g,'-')}-${W}x${H}.png`)
 }
-
 document.getElementById('exportFull').onclick = () => {
-  download(cv.toDataURL('image/png'), `mbox-product-${PRESETS[activePreset].name.toLowerCase().replace(/ /g,'-')}-${W}x${H}.png`)
+  dl(cv.toDataURL('image/png'),`mbox-echo-pro-${PRESETS[activePreset].name.replace(/ /g,'-')}-${W}x${H}.png`)
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
