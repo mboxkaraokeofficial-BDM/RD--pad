@@ -12,8 +12,12 @@ const TABS = [
   { href: '/profile',     icon: User,      label: 'โปรไฟล์' },
 ]
 
+const HIDDEN_PATHS = ['/quote']
+
 export default function BottomNav() {
   const pathname = usePathname()
+
+  if (HIDDEN_PATHS.some(p => pathname.startsWith(p))) return null
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 flex justify-center pb-safe px-4 pb-3">
