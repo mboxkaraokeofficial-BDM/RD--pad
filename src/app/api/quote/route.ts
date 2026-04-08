@@ -14,10 +14,10 @@ export interface QuoteFormData {
 
 async function sendLineNotification(data: QuoteFormData): Promise<void> {
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN
-  const userId = process.env.LINE_NOTIFY_USER_ID
+  const targetId = process.env.LINE_NOTIFY_TARGET_ID
 
-  if (!token || !userId) {
-    console.warn('[LINE] Missing LINE_CHANNEL_ACCESS_TOKEN or LINE_NOTIFY_USER_ID')
+  if (!token || !targetId) {
+    console.warn('[LINE] Missing LINE_CHANNEL_ACCESS_TOKEN or LINE_NOTIFY_TARGET_ID')
     return
   }
 
@@ -64,7 +64,7 @@ async function sendLineNotification(data: QuoteFormData): Promise<void> {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      to: userId,
+      to: targetId,
       messages: [{ type: 'text', text: message }],
     }),
   })
